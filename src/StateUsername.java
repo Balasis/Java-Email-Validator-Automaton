@@ -9,7 +9,7 @@ public class StateUsername implements State{
         if (isItAValidChar(input)){
             return Set.of(this);
         } else if (input=='@') {
-            return Set.of(new StateATSymbol());
+            return Set.of();
         }else{
             return Set.of();//TODO: Replace with throw exception...
         }
