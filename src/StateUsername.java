@@ -11,7 +11,7 @@ public class StateUsername implements State{
         } else if (input=='@') {
             return Set.of(new StateATSymbol());
         }else{
-            return Set.of();
+            return Set.of();//TODO: Replace with throw exception...
         }
     }
 
