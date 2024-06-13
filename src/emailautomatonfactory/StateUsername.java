@@ -1,6 +1,10 @@
+package emailautomatonfactory;
+
+import emailautomatonfactory.State;
+
 import java.util.Set;
 
-public class StateUsername implements State{
+public class StateUsername implements State {
 
 
 
