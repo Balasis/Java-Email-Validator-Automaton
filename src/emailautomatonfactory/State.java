@@ -7,47 +7,22 @@ public class State{
     private String stateName;
     private StateType stateType;
     private char stateValue;
-    private List<Character> disallowedChars;
     private Map<Character,Set<State>> inputToStates;
     private Map<CharRange,Set<State>> inputRangesToStates;
 
-    public State(String stateName){
-        this.disallowedChars = new ArrayList<>();
-        this.inputToStates = new HashMap<>();
-        this.inputRangesToStates = new HashMap<>();
-    }
-
     public State(String stateName,StateType stateType){
-        this.disallowedChars = new ArrayList<>();
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
     }
 
     public State(String stateName,StateType stateType, char stateValue){
         this.stateValue = stateValue;
-        this.disallowedChars = new ArrayList<>();
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
     }
 
-    public void addDisallowedChars(List<Character> theChars){
-        disallowedChars.addAll(theChars);
-    }
-
-    public void addDisallowedChars(Character theChar){
-        disallowedChars.add(theChar);
-    }
-
     public void addInputToStates(Character input, Set<State> states){
         inputToStates.put(input, states);
-    }
-
-    public void addInputToStates(Map<Character,Set<State>> inputToStates){
-        this.inputToStates.putAll(inputToStates);
-    }
-
-    public void addInputRangesToStates(CharRange input, Set<State> states){
-        inputRangesToStates.put(input, states);
     }
 
     public void addInputRangesToStates(Map<CharRange,Set<State>> inputToStates){
@@ -62,33 +37,21 @@ public class State{
         return getStateType();
     }
 
-
-
     public Set<State> getStates(char input) {
 
         return null;
     }
 
-//    private boolean isItAValidChar(char input){
-//        return isLowerCaseEnglishLetter(input) ||
-//                isUpperCaseEnglishLetter(input) ||
-//                isNumeric(input) || isItAnAccessibleSymbol(input);
-//
-//    }
-//
-//    private boolean isItAnAccessibleSymbol(char input){
-//        return input=='-' || input=='_' || input=='.';
-//    }
-//
-//    private boolean isLowerCaseEnglishLetter(char input){
-//        return (('a'<=input) && ('z'>=input));
-//    }
-//
-//    private boolean isUpperCaseEnglishLetter(char input){
-//        return (('A'<=input) && ('Z'>=input));
-//    }
-//
-//    private boolean isNumeric(char input){
-//        return input>= '0' && input <= '9';
-//    }
+    public boolean doesInputExist(char input){
+       if(inputToStates.containsKey(input)){
+           return true;
+       }
+       for(CharRange cR : inputRangesToStates.keySet()){
+           if ((cR.from() <= input) && (cR.to()>= input) ){
+               return true;
+           }
+       }
+        return false;
+    }
+
 }

@@ -6,14 +6,20 @@ import java.util.List;
 public class EmailSchema {
     private String emailLabel;
     private List<String> domains; // Allowed domains
-    private List<Character> disallowedChars; // Characters not allowed in the username
     private List<CharRange> allowedCharRanges; // Ranges of allowed characters for the username
 
     public EmailSchema(String emailLabel) {
         this.emailLabel = emailLabel;
         domains = new ArrayList<>();
-        disallowedChars = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();
+    }
+
+    public void addToDomains(String domainStringNoAT){
+        domains.add(domainStringNoAT);
+    }
+
+    public void allowedCharRanges(CharRange range){
+        allowedCharRanges.add(range);
     }
 
     public String getEmailLabel() {
@@ -24,11 +30,11 @@ public class EmailSchema {
         return domains;
     }
 
-    public List<Character> getDisallowedChars() {
-        return disallowedChars;
-    }
-
     public List<CharRange> getAllowedCharRanges() {
         return allowedCharRanges;
+    }
+
+    public String toString(){
+        return domains +"" + allowedCharRanges + "" + emailLabel;
     }
 }

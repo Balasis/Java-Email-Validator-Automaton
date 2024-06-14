@@ -25,6 +25,16 @@ public class EmailAutomaton {
         generateStates();
     }
 
+
+
+
+
+
+
+
+
+
+
     private void generateStates(){
         generateInitialStateI();
         populateInitialStateTransitions();
@@ -45,31 +55,30 @@ public class EmailAutomaton {
             rangesForInitialState.put(cR,Set.of(symbolState));
         }
         initialStatesI.addInputRangesToStates(rangesForInitialState);
-        initialStatesI.addDisallowedChars(emailSchema.getDisallowedChars());
     }
 
     private void populateRestOfTheStates(){
         ArrayList<String> domainStrings = new ArrayList<>(emailSchema.getDomains());
-
-
-//        Map<State,Set<State>> statesToSetOfStates = new HashMap<>(); //state to states map,used on checking if newState already exist
-//                                                                        //avoid having new states for the same new input
-
-        State[] previousStatesOfListIndexHolder= new State[domainStrings.size()];//state holder
-        Arrays.fill(previousStatesOfListIndexHolder, theSymbolState);//fill it with the current symbol state.
-
+        State[] temporalStateHolder= new State[domainStrings.size()];//state holder
+        Arrays.fill(temporalStateHolder, theSymbolState);//fill it with the current symbol state.
         int maxLengthOfDomain=biggestLengthInDomainList(domainStrings);//taking the length of the biggest domain to use it as a loop
+        // i = char index in string , j = string index in array | aligns with its current "state" in the arrayStateHolder
+        for (int i = 0; i < maxLengthOfDomain; i++) {//rotate over chars
+            for (int j = 0; j < domainStrings.size(); j++) { // rotate over strings(domains)
 
-
-        for (int i = 0; i < maxLengthOfDomain; i++) {//domain arraylist is not being edited therefore indexes match
-            for (String s : domainStrings){          // with the indexes of the new array we made that hold the prev State
-                if (s.length() <= i){//do not get into account the out of length domains...(finished)
-                    finalStatesF.add(previousStatesOfListIndexHolder[i]);//if string ends on this index then the state left in array is the final one.
-
-                }else{
-
+                if (i <= domainStrings.get(i).length()){
+                    char currentCharOfDomain = domainStrings.get(i).charAt(i);
+                     if (! temporalStateHolder[j].doesInputExist(currentCharOfDomain) ){
+                         State s = new State(statesBaseName + stateGenerationCounter++,StateType.DOMAIN,currentCharOfDomain);
+                         allStatesQ.add(s);
+                         temporalStateHolder[j].addInputToStates(currentCharOfDomain,Set.of(s));
+                     }
+                    if (domainStrings.get(i).length()==i){
+                        finalStatesF.add(temporalStateHolder[i]);//if string ends on this index then the state left in array is the final one.
+                    }
                 }
             }
+
         }
 
     }
@@ -81,5 +90,7 @@ public class EmailAutomaton {
         }
         return lengthToBeReturned;
     }
+
+
 
 }
