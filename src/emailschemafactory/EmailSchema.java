@@ -8,7 +8,7 @@ public class EmailSchema {
     private List<String> domains; // Allowed domains
     private List<CharRange> allowedCharRanges; // Ranges of allowed characters for the username
 
-    public EmailSchema(String emailLabel) {
+    public EmailSchema(String emailLabel) {//TODO: create method to check if valid domain
         this.emailLabel = emailLabel;
         domains = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();

@@ -13,12 +13,16 @@ public class State{
     public State(String stateName,StateType stateType){
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
+        this.stateName = stateName;
+        this.stateType = stateType;
     }
 
     public State(String stateName,StateType stateType, char stateValue){
-        this.stateValue = stateValue;
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
+        this.stateName = stateName;
+        this.stateType = stateType;
+        this.stateValue = stateValue;
     }
 
     public void addInputToStates(Character input, Set<State> states){
@@ -52,6 +56,10 @@ public class State{
            }
        }
         return false;
+    }
+
+    public String toString(){
+        return stateType+" : " + stateName +" | " + inputToStates;
     }
 
 }

@@ -66,17 +66,20 @@ public class EmailAutomaton {
         for (int i = 0; i < maxLengthOfDomain; i++) {//rotate over chars
             for (int j = 0; j < domainStrings.size(); j++) { // rotate over strings(domains)
 
-                if (i <= domainStrings.get(i).length()){
-                    char currentCharOfDomain = domainStrings.get(i).charAt(i);
+                if (i <= domainStrings.get(j).length()){
+                    char currentCharOfDomain = domainStrings.get(j).charAt(i);
                      if (! temporalStateHolder[j].doesInputExist(currentCharOfDomain) ){
                          State s = new State(statesBaseName + stateGenerationCounter++,StateType.DOMAIN,currentCharOfDomain);
                          allStatesQ.add(s);
                          temporalStateHolder[j].addInputToStates(currentCharOfDomain,Set.of(s));
+                         System.out.println(temporalStateHolder[j]);
+                         temporalStateHolder[j]=s;
                      }
-                    if (domainStrings.get(i).length()==i){
-                        finalStatesF.add(temporalStateHolder[i]);//if string ends on this index then the state left in array is the final one.
+                    if (domainStrings.get(j).length()==i){
+                        finalStatesF.add(temporalStateHolder[j]);//if string ends on this index then the state left in array is the final one.
                     }
                 }
+
             }
 
         }
