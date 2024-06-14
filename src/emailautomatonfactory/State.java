@@ -1,13 +1,12 @@
 package emailautomatonfactory;
 
 import emailschemafactory.CharRange;
-
-import javax.print.attribute.standard.PageRanges;
 import java.util.*;
 
 public class State{
     private String stateName;
     private StateType stateType;
+    private char stateValue;
     private List<Character> disallowedChars;
     private Map<Character,Set<State>> inputToStates;
     private Map<CharRange,Set<State>> inputRangesToStates;
@@ -19,6 +18,13 @@ public class State{
     }
 
     public State(String stateName,StateType stateType){
+        this.disallowedChars = new ArrayList<>();
+        this.inputToStates = new HashMap<>();
+        this.inputRangesToStates = new HashMap<>();
+    }
+
+    public State(String stateName,StateType stateType, char stateValue){
+        this.stateValue = stateValue;
         this.disallowedChars = new ArrayList<>();
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();

@@ -37,7 +37,7 @@ public class EmailAutomaton {
     }
 
     private void populateInitialStateTransitions(){
-        State symbolState = new State(statesBaseName + stateGenerationCounter++, StateType.SYMBOL);
+        State symbolState = new State(statesBaseName + stateGenerationCounter++, StateType.SYMBOL, '@');
         theSymbolState=symbolState;
         allStatesQ.add(theSymbolState);
         Map <CharRange, Set<State>> rangesForInitialState = new HashMap<>();
@@ -50,14 +50,23 @@ public class EmailAutomaton {
 
     private void populateRestOfTheStates(){
         ArrayList<String> domainStrings = new ArrayList<>(emailSchema.getDomains());
-        int maxLengthOfDomain=biggestLengthInDomainList(domainStrings);
 
-        for (int i = 0; i < maxLengthOfDomain; i++) {
-            for (String s : domainStrings){
-                if (s.length() <= i){//TODO:create map which keeps the state
-                    //TODO: and the according indexes of domain strings, therefore you continue in the path
-                    //TODO:of the next ;..and start new state at the first char of domain even if its not needed
 
+//        Map<State,Set<State>> statesToSetOfStates = new HashMap<>(); //state to states map,used on checking if newState already exist
+//                                                                        //avoid having new states for the same new input
+
+        State[] previousStatesOfListIndexHolder= new State[domainStrings.size()];//state holder
+        Arrays.fill(previousStatesOfListIndexHolder, theSymbolState);//fill it with the current symbol state.
+
+        int maxLengthOfDomain=biggestLengthInDomainList(domainStrings);//taking the length of the biggest domain to use it as a loop
+
+
+        for (int i = 0; i < maxLengthOfDomain; i++) {//domain arraylist is not being edited therefore indexes match
+            for (String s : domainStrings){          // with the indexes of the new array we made that hold the prev State
+                if (s.length() <= i){//do not get into account the out of length domains...(finished)
+
+                }else{
+                    finalStatesF.add(previousStatesOfListIndexHolder[i]);//if string ends then the state left in array is the final one.
                 }
             }
         }
