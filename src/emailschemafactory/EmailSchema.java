@@ -12,6 +12,7 @@ public class EmailSchema {
         this.emailLabel = emailLabel;
         domains = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();
+        domains.add(emailLabel+".com");
     }
 
     public void addToDomains(String domainStringNoAT){
@@ -35,6 +36,6 @@ public class EmailSchema {
     }
 
     public String toString(){
-        return domains +"" + allowedCharRanges + "" + emailLabel;
+        return emailLabel+" : " + domains + "" + allowedCharRanges;
     }
 }
