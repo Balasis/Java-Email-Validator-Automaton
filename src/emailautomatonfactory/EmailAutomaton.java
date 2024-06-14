@@ -64,9 +64,10 @@ public class EmailAutomaton {
         for (int i = 0; i < maxLengthOfDomain; i++) {//domain arraylist is not being edited therefore indexes match
             for (String s : domainStrings){          // with the indexes of the new array we made that hold the prev State
                 if (s.length() <= i){//do not get into account the out of length domains...(finished)
+                    finalStatesF.add(previousStatesOfListIndexHolder[i]);//if string ends on this index then the state left in array is the final one.
 
                 }else{
-                    finalStatesF.add(previousStatesOfListIndexHolder[i]);//if string ends then the state left in array is the final one.
+
                 }
             }
         }
