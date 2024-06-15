@@ -9,19 +9,19 @@ public class EmailValidatorApp {
         EmailSchema check = null;
         try {
             check = new EmailSchema("@gmail.com");
+            check.addToDomains("@subDomain.gmail.com");
         } catch (InvalidDomainFormException e) {
             throw new RuntimeException(e);
         }
-        check.addToDomains("@subDomain.gmail.com");
-        check.allowedCharRanges(new CharRange('A','Z'));
-        check.allowedCharRanges(new CharRange('a','z'));
-        check.allowedCharRanges(new CharRange('0','9'));
-        check.allowedCharRanges(new CharRange('_','_'));
-        check.allowedCharRanges(new CharRange('.','.'));
+        check.addAllowedCharRanges(new CharRange('A','Z'));
+        check.addAllowedCharRanges(new CharRange('a','z'));
+        check.addAllowedCharRanges(new CharRange('0','9'));
+        check.addAllowedCharRanges(new CharRange('_','_'));
+        check.addAllowedCharRanges(new CharRange('.','.'));
 
-        EmailAutomaton checking = new EmailAutomaton( check ,false);
+        EmailAutomaton checking = new EmailAutomaton( check ,true);
 
-        System.out.println(checking.isItAValidEmail("j_o23h.n@subdomain.gmail.com"));
+        System.out.println(checking.isItAValidEmail("j_oAAAh.n@suBDOmain.gmail.com"));
 
 
     }

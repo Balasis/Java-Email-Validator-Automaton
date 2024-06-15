@@ -46,6 +46,7 @@ public class State{
     }
 
     public Set<State> getStates(char input) throws InputExistanceInStateException {
+
         if (input==stateValue){
             return Set.of(this);
         }

@@ -39,10 +39,11 @@ public class EmailAutomaton {
 
 
     public boolean isItAValidEmail(String email){
-        String lowerCaseEmail=email.toLowerCase();
+        String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
+        System.out.println(theEmail);
         ArrayList<State> curState = new ArrayList<>(Collections.singletonList(initialStatesI));
-        for (int i = 0; i < lowerCaseEmail.length(); i++) {
-            char curChar = lowerCaseEmail.charAt(i);
+        for (int i = 0; i < theEmail.length(); i++) {
+            char curChar = theEmail.charAt(i);
             ArrayList<State> rotateStateList = new ArrayList<>();
             for (int j = 0; j < curState.size();j++) {
                 try {
@@ -58,6 +59,11 @@ public class EmailAutomaton {
             }
         }
         return new HashSet<>(finalStatesF).containsAll(curState);
+    }
+
+    private String turnDomainToLower(String email){
+        String[] splittedString=email.split("@");
+        return  splittedString[0] + '@' + splittedString[1].toLowerCase();
     }
 
 
