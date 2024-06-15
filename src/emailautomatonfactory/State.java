@@ -48,7 +48,7 @@ public class State{
         }
         for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
             CharRange charRange = entry.getKey();
-            if (charRange.from() <= input && charRange.to() >= input) {
+            if ( charRange.contains(input) ) {
                 return entry.getValue();
             }
         }
@@ -60,7 +60,7 @@ public class State{
            return true;
        }
        for(CharRange cR : inputRangesToStates.keySet()){
-           if ((cR.from() <= input) && (cR.to()>= input) ){
+           if (cR.contains(input)){
                return true;
            }
        }

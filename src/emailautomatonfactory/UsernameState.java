@@ -51,7 +51,7 @@ public class UsernameState extends State{
         }
         for (Map.Entry<CharRange, Set<State>> entry : getInputRangesToStates().entrySet()) {
             CharRange charRange = entry.getKey();
-            if (charRange.from() <= input && charRange.to() >= input) {
+            if (charRange.contains(input) ) {
                 previousInput=input;
                 return entry.getValue();
             }
@@ -75,7 +75,7 @@ public class UsernameState extends State{
 
     private boolean isIncludedInRangeList(char input, List<CharRange> theList  ){
         for(CharRange cR : theList){
-            if ((cR.from() <= input) && (cR.to()>= input) ){
+            if (cR.contains(input) ){
                 return true;
             }
         }

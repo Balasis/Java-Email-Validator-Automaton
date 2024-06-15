@@ -1,9 +1,23 @@
 package emailschemafactory;
 
-public record CharRange(char from, char to) {
-    public CharRange {
-        if (from > to) {
-            throw new IllegalArgumentException("The 'from' character must be less than or equal to the 'to' character.");
-        }
+public class CharRange {
+    private final char from;
+    private final char to;
+
+    public CharRange(char from, char to) {
+        this.from = from;
+        this.to = to;
+    }
+
+    public char from() {
+        return from;
+    }
+
+    public char to() {
+        return to;
+    }
+
+    public boolean contains(char c) {
+        return from <= c && c <= to;
     }
 }
