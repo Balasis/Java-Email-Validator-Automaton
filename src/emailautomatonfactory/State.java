@@ -6,10 +6,10 @@ import exceptions.InputExistanceInStateException;
 import java.util.*;
 
 public class State{
-    private String stateName;
+    private final String stateName;
     private char stateValue;
-    private Map<Character,Set<State>> inputToStates;
-    private Map<CharRange,Set<State>> inputRangesToStates;
+    private final Map<Character,Set<State>> inputToStates;
+    private final Map<CharRange,Set<State>> inputRangesToStates;
 
     public State(String stateName){
         this.inputToStates = new HashMap<>();
@@ -24,16 +24,13 @@ public class State{
         this.stateValue = stateValue;
     }
 
+    //API
     public void addInputToStates(Character input, Set<State> states){
         inputToStates.put(input, states);
     }
 
     public void addInputRangesToStates(Map<CharRange,Set<State>> inputToStates){
         this.inputRangesToStates.putAll(inputToStates);
-    }
-
-    public char getStateValue() {
-        return stateValue;
     }
 
     public Set<State> getStates(char input) throws InputExistanceInStateException {
@@ -60,6 +57,11 @@ public class State{
             }
         }
         return false;
+    }
+
+    //Getters
+    public char getStateValue() {
+        return stateValue;
     }
 
     public Map<Character, Set<State>> getInputToStates() {

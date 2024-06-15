@@ -59,6 +59,8 @@ public class UsernameState extends State{
         return super.doesInputExist(input);
     }
 
+
+    //Privates -assist
     private void usernameInvalidChecks(char input)  throws InputExistanceInStateException{
         isAnInvalidFirstChar(input);
         isAnInvalidConsecutiveChars(input);
@@ -94,6 +96,7 @@ public class UsernameState extends State{
         return false;
     }
 
+    //setters
     public void setInvalidConsecutiveChars(List<CharRange> invalidConsecutiveChars) {
         this.invalidConsecutiveChars = invalidConsecutiveChars;
     }

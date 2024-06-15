@@ -1,47 +1,17 @@
-import exceptions.EmailAutCaseMergeException;
-import emailautomatonfactory.EmailAutomaton;
-import emailautomatonfactory.EmailAutomatonsMerger;
-import emailschemafactory.EmailSchema;
 import exceptions.InvalidDomainFormException;
-
-import java.util.ArrayList;
 
 public class EmailValidatorApp {
     public static void main(String[] args) {
-        EmailSchema check = null;
         try {
-            check = new EmailSchema("@gmail.com");
-          check.addToDomains("@subDomain.gmail.com");
+            EmailValidatorProgram validatorProgram = new EmailValidatorProgram();
+            validatorProgram.createGoogleAutomaton();
+            validatorProgram.createOutlookAutomaton();
+            // Test the validator
+            System.out.println("Is valid email (test@gmail.com): " + validatorProgram.isValidEmail("test@gmail.com"));
+            System.out.println("Is valid email (test@outlook.com): " + validatorProgram.isValidEmail("test@outlook.com"));
+            System.out.println("Is valid email (test@yahoo.com): " + validatorProgram.isValidEmail("test@yahoo.com"));
         } catch (InvalidDomainFormException e) {
-            throw new RuntimeException(e);
-        }
-        check.addAllBasicCharRanges();
-        check.addAllRegularInvalids();
-        EmailAutomaton checking = new EmailAutomaton( check ,true);
-        EmailSchema checks = null;
-        try {
-            checks = new EmailSchema("@outlook.com");
-            checks.addToDomains("@domainSub.outlook.com");
-        } catch (InvalidDomainFormException e) {
-            throw new RuntimeException(e);
-        }
-        checks.addAllBasicCharRanges();
-        checks.addAllRegularInvalids();
-        EmailAutomaton checkings = new EmailAutomaton( checks ,true);
-
-
-
-        ArrayList<EmailAutomaton> automata = new ArrayList<>();
-        automata.add(checking);
-        automata.add(checkings);
-        try {
-            EmailAutomatonsMerger theMerge = new EmailAutomatonsMerger(automata);
-            System.out.println(theMerge.isItAValidEmail("giovani1994a@gmail.com"));
-        } catch (EmailAutCaseMergeException e) {
             System.out.println(e.getMessage());
         }
-
-
-
     }
 }

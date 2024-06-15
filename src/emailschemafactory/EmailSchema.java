@@ -25,6 +25,7 @@ public class EmailSchema {
         domains.add(this.mainDomain);
     }
 
+    //API
     public void addToDomains(String domainStringNoAT) throws InvalidDomainFormException {
         domains.add( formatDomainString(domainStringNoAT) );
     }
@@ -47,26 +48,6 @@ public class EmailSchema {
         addAllRegularLastCharInvalids();
         addAllRegularNoConsecutiveChar();
     }
-
-    private void addAllRegularFirstCharInvalids(){
-        addFirstUsernameInvalidChars(new CharRange('0','9'));
-        addFirstUsernameInvalidChars('_');
-        addFirstUsernameInvalidChars('.');
-        addFirstUsernameInvalidChars('-');
-    }
-
-    private void addAllRegularLastCharInvalids(){
-        addLastUsernameInvalidChars('_');
-        addLastUsernameInvalidChars('.');
-        addLastUsernameInvalidChars('-');
-    }
-
-    private void addAllRegularNoConsecutiveChar(){
-        addUsernameInvalidConsecutiveChars('_');
-        addUsernameInvalidConsecutiveChars('.');
-        addUsernameInvalidConsecutiveChars('-');
-    }
-
 
     public void addUsernameInvalidConsecutiveChars(char... character ){
         addCharsToList( usernameInvalidConsecutiveChars, character);
@@ -105,6 +86,25 @@ public class EmailSchema {
     }
 
 
+    //Privates -assist
+    private void addAllRegularFirstCharInvalids(){
+        addFirstUsernameInvalidChars(new CharRange('0','9'));
+        addFirstUsernameInvalidChars('_');
+        addFirstUsernameInvalidChars('.');
+        addFirstUsernameInvalidChars('-');
+    }
+
+    private void addAllRegularLastCharInvalids(){
+        addLastUsernameInvalidChars('_');
+        addLastUsernameInvalidChars('.');
+        addLastUsernameInvalidChars('-');
+    }
+
+    private void addAllRegularNoConsecutiveChar(){
+        addUsernameInvalidConsecutiveChars('_');
+        addUsernameInvalidConsecutiveChars('.');
+        addUsernameInvalidConsecutiveChars('-');
+    }
 
     private String formatDomainString(String domainString) throws InvalidDomainFormException {
         String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
@@ -155,6 +155,7 @@ public class EmailSchema {
         }
     }
 
+    //Getters
     public String getMainDomain() {
         return mainDomain;
     }
@@ -180,6 +181,7 @@ public class EmailSchema {
     }
 
     public String toString(){
-        return mainDomain +" : " + domains + "" + allowedCharRanges;
+        return "Main domain : " + mainDomain + "\n" +
+                "Domains : " + domains + "\n";
     }
 }

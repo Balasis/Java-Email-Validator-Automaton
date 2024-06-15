@@ -19,6 +19,7 @@ public class EmailAutomatonsMerger {
         populateAllStateLists();
     }
 
+    //API
     public boolean isItAValidEmail(String email) {
         String theEmail = caseSensitiveDomain ? email : turnDomainToLower(email);
         List<State> currentStates = new ArrayList<>(initialStatesI);
@@ -52,6 +53,7 @@ public class EmailAutomatonsMerger {
     }
 
 
+    //Privates -assist
     private String turnDomainToLower(String email){
         String[] splittedString=email.split("@");
         return  splittedString[0] + '@' + splittedString[1].toLowerCase();
