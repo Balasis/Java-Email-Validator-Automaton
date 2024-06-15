@@ -176,4 +176,8 @@ public class EmailAutomaton {
     public Boolean getCaseSensitiveDomain() {
         return caseSensitiveDomain;
     }
+
+    public State getTheSymbolState() {
+        return theSymbolState;
+    }
 }

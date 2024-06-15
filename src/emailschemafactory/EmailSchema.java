@@ -20,7 +20,7 @@ public class EmailSchema {
         this.usernameInvalidLastChars = new ArrayList<>();
         domains = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();
-        domains.add(mainDomain);
+        domains.add(this.mainDomain);
     }
 
     public void addToDomains(String domainStringNoAT) throws InvalidDomainFormException {

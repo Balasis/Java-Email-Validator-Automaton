@@ -46,6 +46,7 @@ public class State{
             return inputToStates.get(input);
         }
         for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
+            System.out.println(inputRangesToStates);
             CharRange charRange = entry.getKey();//if input exist in the range of input list ->give state
             if ( charRange.contains(input) ) {
                 return entry.getValue();
@@ -75,7 +76,7 @@ public class State{
     }
 
     public String toString(){
-            return " : " + stateName +" | " + inputRangesToStates.keySet();
+            return " : " + stateName +" | " + inputToStates.keySet();
     }
 
 }
