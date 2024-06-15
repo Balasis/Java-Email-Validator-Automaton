@@ -6,10 +6,16 @@ public class EmailValidatorApp {
             EmailValidatorProgram validatorProgram = new EmailValidatorProgram();
             validatorProgram.createGoogleAutomaton();
             validatorProgram.createOutlookAutomaton();
+
             // Test the validator
             System.out.println("Is valid email (test@gmail.com): " + validatorProgram.isValidEmail("test@gmail.com"));
             System.out.println("Is valid email (test@outlook.com): " + validatorProgram.isValidEmail("test@outlook.com"));
-            System.out.println("Is valid email (test@yahoo.com): " + validatorProgram.isValidEmail("test@yahoo.com"));
+
+            // Clear all automatons (for demonstration)
+            validatorProgram.clearAutomatons();
+
+            // Test after clearing
+            System.out.println("Is valid email (test@gmail.com) after clear: " + validatorProgram.isValidEmail("test@gmail.com"));
         } catch (InvalidDomainFormException e) {
             System.out.println(e.getMessage());
         }

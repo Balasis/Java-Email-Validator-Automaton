@@ -16,19 +16,32 @@ public class EmailValidatorProgram {
         this.automatons = new ArrayList<>();
     }
 
-    // Adds a new automaton for a given email schema
+    public boolean isValidEmail(String email) {
+        return automatonMerger != null && automatonMerger.isItAValidEmail(email);
+    }
+
     public void addAutomaton(EmailSchema emailSchema, boolean caseSensitiveDomain) {
         EmailAutomaton automaton = new EmailAutomaton(emailSchema, caseSensitiveDomain);
         automatons.add(automaton);
         updateAutomatonMerger();
     }
 
-    // Checks if an email is valid against all the merged automatons
-    public boolean isValidEmail(String email) {
-        return automatonMerger != null && automatonMerger.isItAValidEmail(email);
+    public void removeAutomaton(int index) {
+        if (index >= 0 && index < automatons.size()) {
+            automatons.remove(index);
+            updateAutomatonMerger();
+        } else {
+            System.out.println("Invalid index. No automaton removed.");
+        }
     }
 
-    // Creates a Google email schema and adds its automaton
+    public void clearAutomatons() {
+        automatons.clear();
+        updateAutomatonMerger();
+    }
+
+
+
     public void createGoogleAutomaton() throws InvalidDomainFormException {
         EmailSchema googleSchema = new EmailSchema("gmail.com");
         googleSchema.addAllBasicCharRanges();
@@ -36,7 +49,6 @@ public class EmailValidatorProgram {
         addAutomaton(googleSchema, false);
     }
 
-    // Creates an Outlook email schema and adds its automaton
     public void createOutlookAutomaton() throws InvalidDomainFormException {
         EmailSchema outlookSchema = new EmailSchema("outlook.com");
         outlookSchema.addAllBasicCharRanges();
@@ -44,7 +56,6 @@ public class EmailValidatorProgram {
         addAutomaton(outlookSchema, false);
     }
 
-    // Private helper method to update the automaton merger
     private void updateAutomatonMerger() {
         try {
             automatonMerger = new EmailAutomatonsMerger(automatons);
@@ -52,6 +63,5 @@ public class EmailValidatorProgram {
             System.out.println(e.getMessage());
         }
     }
-
 
 }
