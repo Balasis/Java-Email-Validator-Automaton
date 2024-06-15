@@ -1,12 +1,10 @@
-import emailautomatonfactory.EmailAutCaseMergeException;
+import exceptions.EmailAutCaseMergeException;
 import emailautomatonfactory.EmailAutomaton;
 import emailautomatonfactory.EmailAutomatonsMerger;
-import emailschemafactory.CharRange;
 import emailschemafactory.EmailSchema;
-import emailschemafactory.InvalidDomainFormException;
+import exceptions.InvalidDomainFormException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class EmailValidatorApp {
     public static void main(String[] args) {
@@ -20,10 +18,6 @@ public class EmailValidatorApp {
         check.addAllBasicCharRanges();
         check.addAllRegularInvalids();
         EmailAutomaton checking = new EmailAutomaton( check ,true);
-
-
-
-
         EmailSchema checks = null;
         try {
             checks = new EmailSchema("@outlook.com");

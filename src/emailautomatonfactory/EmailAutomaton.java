@@ -148,16 +148,6 @@ public class EmailAutomaton {
         return newState;
     }
 
-//    private boolean isInputDifferentThanStateValue(char input, State curState){
-//        return curState.getStateValue() != input;
-//    }
-//
-//    private boolean isInputNewToTheState(char input, State curState){
-//        return !curState.doesInputExist(input);
-//    }
-
-
-
     public List<State> getAllStatesQ() {
         return allStatesQ;
     }

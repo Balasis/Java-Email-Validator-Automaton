@@ -1,6 +1,8 @@
 package emailautomatonfactory;
 
 import emailschemafactory.CharRange;
+import exceptions.InputExistanceInStateException;
+
 import java.util.*;
 
 public class State{

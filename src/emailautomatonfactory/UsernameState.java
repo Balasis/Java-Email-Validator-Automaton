@@ -1,6 +1,7 @@
 package emailautomatonfactory;
 
 import emailschemafactory.CharRange;
+import exceptions.InputExistanceInStateException;
 
 import java.util.ArrayList;
 import java.util.List;
