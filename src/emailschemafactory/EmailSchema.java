@@ -129,17 +129,16 @@ public class EmailSchema {
     }
 
     private void addCharsToList( List<CharRange> theList, CharRange... charRange){
-        List<CharRange> listAffected = theList;
         for (CharRange cR : charRange){
             boolean isFromAndToExist = false;
-            for (CharRange existingCr : listAffected) {
+            for (CharRange existingCr : theList) {
                 if (cR.from() == existingCr.from() && cR.to() == existingCr.to()) {
                     isFromAndToExist = true;
                     break;
                 }
             }
             if (!isFromAndToExist){
-                listAffected.add(cR);
+                theList.add(cR);
             }
         }
     }

@@ -16,17 +16,6 @@ public class EmailAutomaton {
     private State theSymbolState;
     private int stateGenerationCounter;
 
-
-    public EmailAutomaton(EmailSchema emailSchema){
-        this.caseSensitiveDomain=false;
-        this.allStatesQ=new ArrayList<>();
-        this.finalStatesF=new ArrayList<>();
-        this.emailSchema=emailSchema;
-        this.statesBaseNameToLowerCase =emailSchema.getMainDomain().toLowerCase();
-        stateGenerationCounter = 0;
-        generateStates();
-    }
-
     public EmailAutomaton(EmailSchema emailSchema, Boolean caseSensitiveDomain){
         this.caseSensitiveDomain =caseSensitiveDomain;
         this.allStatesQ=new ArrayList<>();
@@ -36,7 +25,6 @@ public class EmailAutomaton {
         stateGenerationCounter = 0;
         generateStates();
     }
-
 
     public boolean isItAValidEmail(String email){
         String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
@@ -65,7 +53,6 @@ public class EmailAutomaton {
         String[] splittedString=email.split("@");
         return  splittedString[0] + '@' + splittedString[1].toLowerCase();
     }
-
 
     private void generateStates(){
         generateInitialStateI();
@@ -119,7 +106,6 @@ public class EmailAutomaton {
         for (int i = 0; i < maxLengthOfDomain; i++) {
             for (int j = 0; j < domainStrings.size(); j++) {
                 if (i < domainStrings.get(j).length()) {
-
                     char currentCharOfDomain;
                     if (caseSensitiveDomain){
                         currentCharOfDomain= domainStrings.get(j).charAt(i);
@@ -130,7 +116,6 @@ public class EmailAutomaton {
                     if (domainStrings.get(j).length() - 1 == i) {
                         finalStatesF.add(temporalStateHolder[j]);
                     }
-
                 }
             }
         }
@@ -148,10 +133,6 @@ public class EmailAutomaton {
         return newState;
     }
 
-    public List<State> getAllStatesQ() {
-        return allStatesQ;
-    }
-
     public List<State> getFinalStatesF() {
         return finalStatesF;
     }
@@ -164,7 +145,4 @@ public class EmailAutomaton {
         return caseSensitiveDomain;
     }
 
-    public State getTheSymbolState() {
-        return theSymbolState;
-    }
 }

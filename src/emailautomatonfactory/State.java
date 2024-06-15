@@ -32,17 +32,11 @@ public class State{
         this.inputRangesToStates.putAll(inputToStates);
     }
 
-    public String getStateName() {
-        return stateName;
-    }
-
     public char getStateValue() {
         return stateValue;
     }
 
     public Set<State> getStates(char input) throws InputExistanceInStateException {
-
-
         if (inputToStates.containsKey(input)) {//if input exist in single input list-> give state
             return inputToStates.get(input);
         }

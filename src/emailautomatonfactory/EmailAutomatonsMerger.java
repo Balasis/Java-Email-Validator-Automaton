@@ -19,34 +19,38 @@ public class EmailAutomatonsMerger {
         populateAllStateLists();
     }
 
-    public boolean isItAValidEmail(String email){
-        String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
-        ArrayList<State> curState = new ArrayList<>(initialStatesI);
-        for (int i = 0; i < theEmail.length(); i++) {
-            char curChar = theEmail.charAt(i);
-            ArrayList<State> rotateStateList = new ArrayList<>();
-            for (int j = 0; j < curState.size();j++) {
-                    if(curState.get(j).doesInputExist(curChar)){
-                        try {
-                            Set<State> returStates= curState.get(j).getStates(curChar);
-                            rotateStateList.addAll(returStates);
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
+    public boolean isItAValidEmail(String email) {
+        String theEmail = caseSensitiveDomain ? email : turnDomainToLower(email);
+        List<State> currentStates = new ArrayList<>(initialStatesI);
+
+        for (char currentChar : theEmail.toCharArray()) {
+            List<State> nextStates = new ArrayList<>();
+            for (State state : currentStates) {
+                if (state.doesInputExist(currentChar)) {
+                    try {
+                        Set<State> returnedStates = state.getStates(currentChar);
+                        nextStates.addAll(returnedStates);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
+                }
             }
-            curState = rotateStateList;
-            if (curState.isEmpty()){
+
+            currentStates = nextStates;
+            if (currentStates.isEmpty()) {
                 return false;
             }
         }
-        for (State state : curState) {
+
+        for (State state : currentStates) {
             if (finalStatesF.contains(state)) {
                 return true;
             }
         }
+
         return false;
     }
+
 
     private String turnDomainToLower(String email){
         String[] splittedString=email.split("@");
