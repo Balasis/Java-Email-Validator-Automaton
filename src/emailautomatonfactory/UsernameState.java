@@ -25,21 +25,7 @@ public class UsernameState extends State{
 
     @Override
     public Set<State> getStates(char input) throws InputExistanceInStateException {
-
-        if(isItTheFirstInput && isAnInvalidFirstChar(input)){
-            throw new InputExistanceInStateException("Char "+ input +" isn't allowed as first char of username");
-        }else{
-            isItTheFirstInput = false;
-        }
-
-
-        if (previousInput==input && isAnInvalidConsecutiveChars(input)){
-            throw new InputExistanceInStateException("You can't have two '"+input+"' one after another");
-        }
-
-        if (isAnInvalidLastChar(input)){
-            throw new InputExistanceInStateException("Char "+previousInput +" isn't allowed as last char of username(before '@')");
-        }
+        usernameInvalidChecks(input);
 
         if (input==getStateValue()){
             previousInput=input;
@@ -59,18 +45,30 @@ public class UsernameState extends State{
         throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
     }
 
-
-
-    private boolean isAnInvalidFirstChar(char input){
-        return  isIncludedInRangeList( input, invalidFirstChars );
+    private void usernameInvalidChecks(char input)  throws InputExistanceInStateException{
+        isAnInvalidFirstChar(input);
+        isAnInvalidConsecutiveChars(input);
+        isAnInvalidLastChar(input);
     }
 
-    private boolean isAnInvalidLastChar(char input){
-        return  isIncludedInRangeList( previousInput, invalidLastChars ) && input=='@';
+    private void isAnInvalidFirstChar(char input) throws InputExistanceInStateException {
+        if( isItTheFirstInput && isIncludedInRangeList( input, invalidFirstChars )){
+            throw new InputExistanceInStateException("Char "+ input +" isn't allowed as first char of username");
+        }else{
+            isItTheFirstInput = false;
+        }
     }
 
-    private boolean isAnInvalidConsecutiveChars(char input){
-        return  isIncludedInRangeList( input, invalidConsecutiveChars );
+    private void isAnInvalidConsecutiveChars(char input) throws InputExistanceInStateException {
+        if (previousInput==input && isIncludedInRangeList( input, invalidConsecutiveChars )){
+            throw new InputExistanceInStateException("You can't have two '"+input+"' one after another");
+        }
+    }
+
+    private void isAnInvalidLastChar(char input) throws InputExistanceInStateException {
+        if (isIncludedInRangeList( previousInput, invalidLastChars ) && input=='@'){
+            throw new InputExistanceInStateException("Char "+previousInput +" isn't allowed as last char of username(before '@')");
+        }
     }
 
     private boolean isIncludedInRangeList(char input, List<CharRange> theList  ){
