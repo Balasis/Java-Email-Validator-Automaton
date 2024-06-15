@@ -19,7 +19,7 @@ public class EmailValidatorApp {
         check.allowedCharRanges(new CharRange('_','_'));
         check.allowedCharRanges(new CharRange('.','.'));
 
-        EmailAutomaton checking = new EmailAutomaton( check );
+        EmailAutomaton checking = new EmailAutomaton( check ,false);
 
         System.out.println(checking.isItAValidEmail("j_o23h.n@subdomain.gmail.com"));
 

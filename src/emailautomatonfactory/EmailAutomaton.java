@@ -7,6 +7,7 @@ import java.util.*;
 
 public class EmailAutomaton {
 
+    private final Boolean caseSensitiveDomain;
     private final EmailSchema emailSchema;
     private final String statesBaseNameToLowerCase;
     private final List<State> allStatesQ;
@@ -17,6 +18,7 @@ public class EmailAutomaton {
 
 
     public EmailAutomaton(EmailSchema emailSchema){
+        this.caseSensitiveDomain=false;
         this.allStatesQ=new ArrayList<>();
         this.finalStatesF=new ArrayList<>();
         this.emailSchema=emailSchema;
@@ -24,6 +26,17 @@ public class EmailAutomaton {
         stateGenerationCounter = 0;
         generateStates();
     }
+
+    public EmailAutomaton(EmailSchema emailSchema, Boolean caseSensitiveDomain){
+        this.caseSensitiveDomain =caseSensitiveDomain;
+        this.allStatesQ=new ArrayList<>();
+        this.finalStatesF=new ArrayList<>();
+        this.emailSchema=emailSchema;
+        this.statesBaseNameToLowerCase =emailSchema.getMainDomain().toLowerCase();
+        stateGenerationCounter = 0;
+        generateStates();
+    }
+
 
     public boolean isItAValidEmail(String email){
         String lowerCaseEmail=email.toLowerCase();
@@ -40,7 +53,6 @@ public class EmailAutomaton {
                 }
             }
             curState = rotateStateList;
-            System.out.println(curState);
             if (curState.isEmpty()){
                 return false;
             }
@@ -88,9 +100,14 @@ public class EmailAutomaton {
     private void generateDomainStates(ArrayList<String> domainStrings, State[] temporalStateHolder, int maxLengthOfDomain) {
         for (int i = 0; i < maxLengthOfDomain; i++) {
             for (int j = 0; j < domainStrings.size(); j++) {
-                if (i < domainStrings.get(j).length()) {//be aware for the lowerCase,Othewise we make it case-sensitive;
-                    char currentCharOfDomain = domainStrings.get(j).toLowerCase().charAt(i);//could make it optional
-                    generateNewState(currentCharOfDomain, temporalStateHolder, j);          //but email domains are never case-sens
+                if (i < domainStrings.get(j).length()) {
+                    char currentCharOfDomain;
+                    if (caseSensitiveDomain){
+                        currentCharOfDomain= domainStrings.get(j).charAt(i);
+                    }else{
+                        currentCharOfDomain= domainStrings.get(j).toLowerCase().charAt(i);
+                    }
+                    generateNewState(currentCharOfDomain, temporalStateHolder, j);
                     if (domainStrings.get(j).length() - 1 == i) {
                         finalStatesF.add(temporalStateHolder[j]);
                     }
