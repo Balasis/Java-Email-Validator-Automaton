@@ -19,8 +19,8 @@ public class EmailSchema {
         domains = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();
         domains.add(mainDomain);
-        addFirstUsernameInvalidChars('_','-','@','.');
-        addLastUsernameInvalidChars('_','-','@','.');
+//        addFirstUsernameInvalidChars('_','-','@','.');
+//        addLastUsernameInvalidChars('_','-','@','.');
     }
 
     public void addToDomains(String domainStringNoAT) throws InvalidDomainFormException {
@@ -65,19 +65,21 @@ public class EmailSchema {
     }
 
     private void addInvalidChars(boolean isItFirst,CharRange... charRange){
+        List<CharRange> listAffected = isItFirst ? usernameInvalidFirstChars : usernameInvalidLastChars ;
         for (CharRange cR : charRange){
             boolean isFromAndToExist = false;
-            for (CharRange existingCr : usernameInvalidFirstChars) {
+            for (CharRange existingCr : listAffected) {
                 if (cR.from() == existingCr.from() && cR.to() == existingCr.to()) {
                     isFromAndToExist = true;
-                    System.out.println(cR.from() + " | "+cR.to() + " exists");
+                    System.out.println(cR.from() + " | " + cR.to() + " exists");
                     break;
                 }
             }
             if (!isFromAndToExist){
-                usernameInvalidFirstChars.add(cR);
+                listAffected.add(cR);
             }
         }
+        System.out.println(listAffected);
     }
 
     private void addInvalidChars(boolean isItFirst, char... character ){
