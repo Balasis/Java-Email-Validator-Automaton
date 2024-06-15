@@ -20,20 +20,10 @@ public class EmailAutomaton {
         this.allStatesQ=new ArrayList<>();
         this.finalStatesF=new ArrayList<>();
         this.emailSchema=emailSchema;
-        this.statesBaseName=emailSchema.getEmailLabel();
+        this.statesBaseName=emailSchema.getMainDomain();
         stateGenerationCounter = 0;
         generateStates();
     }
-
-
-
-
-
-
-
-
-
-
 
     private void generateStates(){
         generateInitialStateI();
