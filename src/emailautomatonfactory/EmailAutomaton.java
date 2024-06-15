@@ -40,7 +40,6 @@ public class EmailAutomaton {
 
     public boolean isItAValidEmail(String email){
         String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
-        System.out.println(theEmail);
         ArrayList<State> curState = new ArrayList<>(Collections.singletonList(initialStateI));
         for (int i = 0; i < theEmail.length(); i++) {
             char curChar = theEmail.charAt(i);

@@ -1,7 +1,6 @@
 package emailautomatonfactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EmailAutomatonsMerger {
     private final Boolean caseSensitiveDomain;
@@ -19,6 +18,36 @@ public class EmailAutomatonsMerger {
         this.initialStatesI= new ArrayList<>();
         populateAllStateLists();
     }
+
+    public boolean isItAValidEmail(String email){
+        String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
+        ArrayList<State> curState = new ArrayList<>(initialStatesI);
+        for (int i = 0; i < theEmail.length(); i++) {
+            char curChar = theEmail.charAt(i);
+            ArrayList<State> rotateStateList = new ArrayList<>();
+            for (int j = 0; j < curState.size();j++) {
+                try {
+                    Set<State> returStates= curState.get(j).getStates(curChar);
+                    rotateStateList.addAll(returStates);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            curState = rotateStateList;
+            if (curState.isEmpty()){
+                return false;
+            }
+        }
+        return new HashSet<>(finalStatesF).containsAll(curState);
+    }
+
+    private String turnDomainToLower(String email){
+        String[] splittedString=email.split("@");
+        return  splittedString[0] + '@' + splittedString[1].toLowerCase();
+    }
+
+
+
 
     private void isCaseSensAmongSchemasConsist() throws EmailAutCaseMergeException {
         boolean referenceCaseSensitivity = emailAutomaton.get(0).getCaseSensitiveDomain();
