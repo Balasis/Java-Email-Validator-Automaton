@@ -26,19 +26,26 @@ public class EmailAutomatonsMerger {
             char curChar = theEmail.charAt(i);
             ArrayList<State> rotateStateList = new ArrayList<>();
             for (int j = 0; j < curState.size();j++) {
-                try {
-                    Set<State> returStates= curState.get(j).getStates(curChar);
-                    rotateStateList.addAll(returStates);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                    if(curState.get(j).doesInputExist(curChar)){
+                        try {
+                            Set<State> returStates= curState.get(j).getStates(curChar);
+                            rotateStateList.addAll(returStates);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
             }
             curState = rotateStateList;
             if (curState.isEmpty()){
                 return false;
             }
         }
-        return new HashSet<>(finalStatesF).containsAll(curState);
+        for (State state : curState) {
+            if (finalStatesF.contains(state)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String turnDomainToLower(String email){

@@ -13,16 +13,16 @@ public class EmailValidatorApp {
         EmailSchema check = null;
         try {
             check = new EmailSchema("@gmail.com");
-           // check.addToDomains("@subDomain.gmail.com");
+          check.addToDomains("@subDomain.gmail.com");
         } catch (InvalidDomainFormException e) {
             throw new RuntimeException(e);
         }
         check.addAllBasicCharRanges();
         check.addAllRegularInvalids();
-        System.out.println(check.getMainDomain());
-        System.out.println(check.getDomains());
-
         EmailAutomaton checking = new EmailAutomaton( check ,true);
+
+
+
 
         EmailSchema checks = null;
         try {
@@ -33,15 +33,21 @@ public class EmailValidatorApp {
         }
         checks.addAllBasicCharRanges();
         checks.addAllRegularInvalids();
-        EmailAutomaton checkings = new EmailAutomaton( checks ,false);
+        EmailAutomaton checkings = new EmailAutomaton( checks ,true);
+
+
+
         ArrayList<EmailAutomaton> automata = new ArrayList<>();
         automata.add(checking);
         automata.add(checkings);
         try {
             EmailAutomatonsMerger theMerge = new EmailAutomatonsMerger(automata);
-            theMerge.isItAValidEmail("giovani1994a@gmail.com");
+            System.out.println(theMerge.isItAValidEmail("giovani1994a@gmail.com"));
         } catch (EmailAutCaseMergeException e) {
             System.out.println(e.getMessage());
         }
+
+
+
     }
 }

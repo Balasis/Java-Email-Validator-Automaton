@@ -45,6 +45,19 @@ public class UsernameState extends State{
         throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
     }
 
+    @Override
+    public boolean doesInputExist(char input){
+        try {
+            usernameInvalidChecks(input);
+        } catch (InputExistanceInStateException e) {
+            return false;
+        }
+        if (input==getStateValue()){
+            return true;
+        }
+        return super.doesInputExist(input);
+    }
+
     private void usernameInvalidChecks(char input)  throws InputExistanceInStateException{
         isAnInvalidFirstChar(input);
         isAnInvalidConsecutiveChars(input);

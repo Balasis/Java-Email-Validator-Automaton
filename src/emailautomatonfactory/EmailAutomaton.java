@@ -43,6 +43,7 @@ public class EmailAutomaton {
         ArrayList<State> curState = new ArrayList<>(Collections.singletonList(initialStateI));
         for (int i = 0; i < theEmail.length(); i++) {
             char curChar = theEmail.charAt(i);
+            System.out.println(theEmail.charAt(i));
             ArrayList<State> rotateStateList = new ArrayList<>();
             for (int j = 0; j < curState.size();j++) {
                 try {
@@ -118,6 +119,7 @@ public class EmailAutomaton {
         for (int i = 0; i < maxLengthOfDomain; i++) {
             for (int j = 0; j < domainStrings.size(); j++) {
                 if (i < domainStrings.get(j).length()) {
+
                     char currentCharOfDomain;
                     if (caseSensitiveDomain){
                         currentCharOfDomain= domainStrings.get(j).charAt(i);
@@ -128,21 +130,16 @@ public class EmailAutomaton {
                     if (domainStrings.get(j).length() - 1 == i) {
                         finalStatesF.add(temporalStateHolder[j]);
                     }
+
                 }
             }
         }
     }
 
     private void generateNewState(char currentCharOfDomain, State[] temporalStateHolder, int domainIndex) {
-        if (isNewStateNeeded(currentCharOfDomain, temporalStateHolder[domainIndex])) {
             State newState = createNewState(currentCharOfDomain);
             temporalStateHolder[domainIndex].addInputToStates(currentCharOfDomain, Set.of(newState));
             temporalStateHolder[domainIndex] = newState;
-        }
-    }
-
-    private boolean isNewStateNeeded(char input, State curState){
-        return  isInputDifferentThanStateValue(input, curState) && isInputNewToTheState(input, curState);
     }
 
     private State createNewState(char currentCharOfDomain) {
@@ -151,13 +148,13 @@ public class EmailAutomaton {
         return newState;
     }
 
-    private boolean isInputDifferentThanStateValue(char input, State curState){
-        return curState.getStateValue() != input;
-    }
-
-    private boolean isInputNewToTheState(char input, State curState){
-        return !curState.doesInputExist(input);
-    }
+//    private boolean isInputDifferentThanStateValue(char input, State curState){
+//        return curState.getStateValue() != input;
+//    }
+//
+//    private boolean isInputNewToTheState(char input, State curState){
+//        return !curState.doesInputExist(input);
+//    }
 
 
 

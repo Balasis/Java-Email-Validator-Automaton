@@ -39,14 +39,12 @@ public class State{
     }
 
     public Set<State> getStates(char input) throws InputExistanceInStateException {
-        if (input==stateValue){//if the same as previous-> no state change
-            return Set.of(this);
-        }
+
+
         if (inputToStates.containsKey(input)) {//if input exist in single input list-> give state
             return inputToStates.get(input);
         }
         for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
-            System.out.println(inputRangesToStates);
             CharRange charRange = entry.getKey();//if input exist in the range of input list ->give state
             if ( charRange.contains(input) ) {
                 return entry.getValue();
@@ -56,14 +54,15 @@ public class State{
     }
 
     public boolean doesInputExist(char input){
-       if(inputToStates.containsKey(input) && (input==stateValue)){
-           return true;
-       }
-       for(CharRange cR : inputRangesToStates.keySet()){
-           if (cR.contains(input)){
-               return true;
-           }
-       }
+        if (inputToStates.containsKey(input)) {
+            return true;
+        }
+        for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
+            CharRange charRange = entry.getKey();
+            if ( charRange.contains(input) ) {
+                return true;
+            }
+        }
         return false;
     }
 
