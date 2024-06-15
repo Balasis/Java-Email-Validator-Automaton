@@ -12,7 +12,7 @@ public class EmailAutomaton {
     private final String statesBaseNameToLowerCase;
     private final List<State> allStatesQ;
     private final List<State> finalStatesF;
-    private UsernameState initialStatesI;
+    private UsernameState initialStateI;
     private State theSymbolState;
     private int stateGenerationCounter;
 
@@ -41,7 +41,7 @@ public class EmailAutomaton {
     public boolean isItAValidEmail(String email){
         String theEmail= caseSensitiveDomain ? email : turnDomainToLower(email) ;
         System.out.println(theEmail);
-        ArrayList<State> curState = new ArrayList<>(Collections.singletonList(initialStatesI));
+        ArrayList<State> curState = new ArrayList<>(Collections.singletonList(initialStateI));
         for (int i = 0; i < theEmail.length(); i++) {
             char curChar = theEmail.charAt(i);
             ArrayList<State> rotateStateList = new ArrayList<>();
@@ -74,11 +74,11 @@ public class EmailAutomaton {
     }
 
     private void generateInitialStateI(){
-        initialStatesI = new UsernameState(statesBaseNameToLowerCase + stateGenerationCounter++);
-        initialStatesI.setInvalidFirstChars(emailSchema.getUsernameInvalidFirstChars());
-        initialStatesI.setInvalidLastChars(emailSchema.getUsernameInvalidLastChars());
-        initialStatesI.setInvalidConsecutiveChars(emailSchema.getUsernameInvalidConsecutiveChars());
-        allStatesQ.add(initialStatesI);
+        initialStateI = new UsernameState(statesBaseNameToLowerCase + stateGenerationCounter++);
+        initialStateI.setInvalidFirstChars(emailSchema.getUsernameInvalidFirstChars());
+        initialStateI.setInvalidLastChars(emailSchema.getUsernameInvalidLastChars());
+        initialStateI.setInvalidConsecutiveChars(emailSchema.getUsernameInvalidConsecutiveChars());
+        allStatesQ.add(initialStateI);
     }
 
     private void populateInitialStateTransitions(){
@@ -87,10 +87,10 @@ public class EmailAutomaton {
         allStatesQ.add(theSymbolState);
         Map <CharRange, Set<State>> rangesForInitialState = new HashMap<>();
         for (CharRange cR : emailSchema.getAllowedCharRanges()){
-            rangesForInitialState.put(cR,Set.of(initialStatesI));
+            rangesForInitialState.put(cR,Set.of(initialStateI));
         }
-        initialStatesI.addInputRangesToStates(rangesForInitialState);
-        initialStatesI.addInputToStates('@', Set.of(symbolState) );
+        initialStateI.addInputRangesToStates(rangesForInitialState);
+        initialStateI.addInputToStates('@', Set.of(symbolState) );
     }
 
     private void populateRestOfTheStates() {
@@ -170,7 +170,11 @@ public class EmailAutomaton {
         return finalStatesF;
     }
 
-    public State getInitialStatesI() {
-        return initialStatesI;
+    public UsernameState getInitialStateI() {
+        return initialStateI;
+    }
+
+    public Boolean getCaseSensitiveDomain() {
+        return caseSensitiveDomain;
     }
 }

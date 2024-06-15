@@ -15,6 +15,6 @@ public class EmailValidatorApp {
         check.addAllBasicCharRanges();
         check.addAllRegularInvalids();
         EmailAutomaton checking = new EmailAutomaton( check ,false);
-        System.out.println(checking.isItAValidEmail("j_oAA--Ah.n@suBDOmain.gmail.com"));
+        System.out.println(checking.isItAValidEmail("j_oAA-Ah.n@suBDOmain.gmail.com"));
     }
 }
