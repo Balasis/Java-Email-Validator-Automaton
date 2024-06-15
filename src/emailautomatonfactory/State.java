@@ -5,23 +5,20 @@ import java.util.*;
 
 public class State{
     private String stateName;
-    private StateType stateType;
     private char stateValue;
     private Map<Character,Set<State>> inputToStates;
     private Map<CharRange,Set<State>> inputRangesToStates;
 
-    public State(String stateName,StateType stateType){
+    public State(String stateName){
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
         this.stateName = stateName;
-        this.stateType = stateType;
     }
 
-    public State(String stateName,StateType stateType, char stateValue){
+    public State(String stateName, char stateValue){
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
         this.stateName = stateName;
-        this.stateType = stateType;
         this.stateValue = stateValue;
     }
 
@@ -39,10 +36,6 @@ public class State{
 
     public char getStateValue() {
         return stateValue;
-    }
-
-    public StateType getStateType(){
-        return getStateType();
     }
 
     public Set<State> getStates(char input) throws InputExistanceInStateException {
@@ -74,11 +67,16 @@ public class State{
         return false;
     }
 
+    public Map<Character, Set<State>> getInputToStates() {
+        return inputToStates;
+    }
+
+    public Map<CharRange, Set<State>> getInputRangesToStates() {
+        return inputRangesToStates;
+    }
+
     public String toString(){
-        if (stateType == StateType.USERNAME){
-            return stateType+" : " + stateName +" | " + inputRangesToStates.keySet() + " ||||";
-        }
-        return stateType+" : " + stateName +" | " + inputToStates.keySet();
+            return " : " + stateName +" | " + inputRangesToStates.keySet();
     }
 
 }

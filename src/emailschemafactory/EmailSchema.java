@@ -8,12 +8,14 @@ import java.util.List;
 public class EmailSchema {
     private final String mainDomain;
     private final List<String> domains; // Allowed domains
+    private final List<CharRange> usernameInvalidConsecutiveChars;
     private final List<CharRange> usernameInvalidFirstChars;
     private final List<CharRange> usernameInvalidLastChars;
     private final List<CharRange> allowedCharRanges; // Ranges of allowed characters for the username
 
     public EmailSchema(String mainDomain) throws InvalidDomainFormException {//TODO: create method to check if valid domain
         this.mainDomain = formatDomainString(mainDomain);
+        this.usernameInvalidConsecutiveChars = new ArrayList<>();
         this.usernameInvalidFirstChars = new ArrayList<>();
         this.usernameInvalidLastChars = new ArrayList<>();
         domains = new ArrayList<>();
@@ -40,32 +42,44 @@ public class EmailSchema {
         addAllowedCharRanges(new CharRange('-','-'));
     }
 
+    public void addUsernameInvalidConsecutiveChars(char... character ){
+        addCharsToList( usernameInvalidConsecutiveChars, character);
+    }
+
+    public void addUsernameInvalidConsecutiveChars(CharRange... charRange){
+        addCharsToList(usernameInvalidConsecutiveChars, charRange);
+    }
+
+    public void addUsernameInvalidConsecutiveChars(Collection<CharRange> collection){
+        addCharsToList(usernameInvalidConsecutiveChars, collection);
+    }
+
     public void addFirstUsernameInvalidChars(char... character ){
-        addInvalidChars(true, character);
+        addCharsToList( usernameInvalidFirstChars, character);
     }
 
     public void addFirstUsernameInvalidChars(CharRange... charRange){
-        addInvalidChars(true, charRange);
+        addCharsToList(usernameInvalidFirstChars, charRange);
     }
 
     public void addFirstUsernameInvalidChars(Collection<CharRange> collection){
-        addInvalidChars(true, collection);
+        addCharsToList(usernameInvalidFirstChars, collection);
     }
 
     public void addLastUsernameInvalidChars(char... character){
-        addInvalidChars(false, character);
+        addCharsToList(usernameInvalidLastChars, character);
     }
 
     public void addLastUsernameInvalidChars(CharRange... charRange){
-        addInvalidChars(false, charRange);
+        addCharsToList(usernameInvalidLastChars, charRange);
     }
 
     public void addLastUsernameInvalidChars(Collection<CharRange> collection){
-        addInvalidChars(false, collection);
+        addCharsToList(usernameInvalidLastChars, collection);
     }
 
-    private void addInvalidChars(boolean isItFirst,CharRange... charRange){
-        List<CharRange> listAffected = isItFirst ? usernameInvalidFirstChars : usernameInvalidLastChars ;
+    private void addCharsToList( List<CharRange> theList, CharRange... charRange){
+        List<CharRange> listAffected = theList;
         for (CharRange cR : charRange){
             boolean isFromAndToExist = false;
             for (CharRange existingCr : listAffected) {
@@ -82,17 +96,18 @@ public class EmailSchema {
         System.out.println(listAffected);
     }
 
-    private void addInvalidChars(boolean isItFirst, char... character ){
+    private void addCharsToList(List<CharRange> theList, char... character ){
         for (char c : character){
-            addInvalidChars( isItFirst, new CharRange(c,c));
+            addCharsToList( theList, new CharRange(c,c));
         }
     }
 
-    private void addInvalidChars(boolean isItFirst,Collection<CharRange> collection){
+    private void addCharsToList(List<CharRange> theList, Collection<CharRange> collection){
         for (CharRange cR : collection){
-            addInvalidChars(isItFirst, cR);
+            addCharsToList(theList, cR);
         }
     }
+
 
     private String formatDomainString(String domainString) throws InvalidDomainFormException {
         String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
@@ -126,6 +141,20 @@ public class EmailSchema {
 
     public List<CharRange> getAllowedCharRanges() {
         return allowedCharRanges;
+    }
+
+
+
+    public List<CharRange> getUsernameInvalidFirstChars() {
+        return usernameInvalidFirstChars;
+    }
+
+    public List<CharRange> getUsernameInvalidLastChars() {
+        return usernameInvalidLastChars;
+    }
+
+    public List<CharRange> getUsernameInvalidConsecutiveChars() {
+        return usernameInvalidConsecutiveChars;
     }
 
     public String toString(){

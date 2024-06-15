@@ -12,7 +12,7 @@ public class EmailAutomaton {
     private final String statesBaseNameToLowerCase;
     private final List<State> allStatesQ;
     private final List<State> finalStatesF;
-    private State initialStatesI;
+    private UsernameState initialStatesI;
     private State theSymbolState;
     private int stateGenerationCounter;
 
@@ -74,12 +74,15 @@ public class EmailAutomaton {
     }
 
     private void generateInitialStateI(){
-        initialStatesI = new State(statesBaseNameToLowerCase + stateGenerationCounter++ , StateType.USERNAME);
+        initialStatesI = new UsernameState(statesBaseNameToLowerCase + stateGenerationCounter++);
+        initialStatesI.setInvalidFirstChars(emailSchema.getUsernameInvalidFirstChars());
+        initialStatesI.setInvalidLastChars(emailSchema.getUsernameInvalidLastChars());
+        initialStatesI.setInvalidConsecutiveChars(emailSchema.getUsernameInvalidConsecutiveChars());
         allStatesQ.add(initialStatesI);
     }
 
     private void populateInitialStateTransitions(){
-        State symbolState = new State(statesBaseNameToLowerCase + stateGenerationCounter++, StateType.SYMBOL, '@');
+        State symbolState = new State(statesBaseNameToLowerCase + stateGenerationCounter++);
         theSymbolState=symbolState;
         allStatesQ.add(theSymbolState);
         Map <CharRange, Set<State>> rangesForInitialState = new HashMap<>();
@@ -131,7 +134,7 @@ public class EmailAutomaton {
     }
 
     private State createNewState(char currentCharOfDomain) {
-        State newState = new State(statesBaseNameToLowerCase + stateGenerationCounter++, StateType.DOMAIN, currentCharOfDomain);
+        State newState = new State(statesBaseNameToLowerCase + stateGenerationCounter++, currentCharOfDomain);
         allStatesQ.add(newState);
         return newState;
     }
