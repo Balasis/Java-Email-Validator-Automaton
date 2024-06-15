@@ -13,19 +13,13 @@ public class EmailValidatorApp {
         } catch (InvalidDomainFormException e) {
             throw new RuntimeException(e);
         }
-        check.addFirstUsernameInvalidChars('.');
-        check.addLastUsernameInvalidChars('.');
-        check.addUsernameInvalidConsecutiveChars('-');
-        check.addAllowedCharRanges(new CharRange('A','Z'));
-        check.addAllowedCharRanges(new CharRange('a','z'));
-        check.addAllowedCharRanges(new CharRange('0','9'));
-        check.addAllowedCharRanges(new CharRange('_','_'));
-        check.addAllowedCharRanges(new CharRange('.','.'));
-        check.addAllowedCharRanges(new CharRange('-','-'));
 
-        EmailAutomaton checking = new EmailAutomaton( check ,true);
+        check.addAllBasicCharRanges();
+        check.addAllRegularInvalids();
 
-        System.out.println(checking.isItAValidEmail("j_oAA--Ah.n@suBDOmain.gmail.com"));
+        EmailAutomaton checking = new EmailAutomaton( check ,false);
+
+        System.out.println(checking.isItAValidEmail("j_oAA-Ah.n@suBDOmain.gmail.com"));
 
 
     }

@@ -21,8 +21,6 @@ public class EmailSchema {
         domains = new ArrayList<>();
         allowedCharRanges = new ArrayList<>();
         domains.add(mainDomain);
-//        addFirstUsernameInvalidChars('_','-','@','.');
-//        addLastUsernameInvalidChars('_','-','@','.');
     }
 
     public void addToDomains(String domainStringNoAT) throws InvalidDomainFormException {
@@ -41,6 +39,32 @@ public class EmailSchema {
         addAllowedCharRanges(new CharRange('.','.'));
         addAllowedCharRanges(new CharRange('-','-'));
     }
+
+    public void addAllRegularInvalids(){
+        addAllRegularFirstCharInvalids();
+        addAllRegularLastCharInvalids();
+        addAllRegularNoConsecutiveChar();
+    }
+
+    private void addAllRegularFirstCharInvalids(){
+        addFirstUsernameInvalidChars(new CharRange('0','9'));
+        addFirstUsernameInvalidChars('_');
+        addFirstUsernameInvalidChars('.');
+        addFirstUsernameInvalidChars('-');
+    }
+
+    private void addAllRegularLastCharInvalids(){
+        addLastUsernameInvalidChars('_');
+        addLastUsernameInvalidChars('.');
+        addLastUsernameInvalidChars('-');
+    }
+
+    private void addAllRegularNoConsecutiveChar(){
+        addUsernameInvalidConsecutiveChars('_');
+        addUsernameInvalidConsecutiveChars('.');
+        addUsernameInvalidConsecutiveChars('-');
+    }
+
 
     public void addUsernameInvalidConsecutiveChars(char... character ){
         addCharsToList( usernameInvalidConsecutiveChars, character);
@@ -85,7 +109,6 @@ public class EmailSchema {
             for (CharRange existingCr : listAffected) {
                 if (cR.from() == existingCr.from() && cR.to() == existingCr.to()) {
                     isFromAndToExist = true;
-                    System.out.println(cR.from() + " | " + cR.to() + " exists");
                     break;
                 }
             }
@@ -93,7 +116,6 @@ public class EmailSchema {
                 listAffected.add(cR);
             }
         }
-        System.out.println(listAffected);
     }
 
     private void addCharsToList(List<CharRange> theList, char... character ){
