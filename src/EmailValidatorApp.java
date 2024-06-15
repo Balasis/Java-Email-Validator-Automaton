@@ -18,7 +18,6 @@ public class EmailValidatorApp {
 
         EmailAutomaton checking = new EmailAutomaton( check );
         System.out.println(" ");
-        System.out.println(checking.getFinalStatesF());
 
     }
 }

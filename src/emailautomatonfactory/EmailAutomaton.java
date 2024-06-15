@@ -47,35 +47,47 @@ public class EmailAutomaton {
         initialStatesI.addInputRangesToStates(rangesForInitialState);
     }
 
-    private void populateRestOfTheStates(){
+    private void populateRestOfTheStates() {
         ArrayList<String> domainStrings = new ArrayList<>(emailSchema.getDomains());
-        State[] temporalStateHolder= new State[domainStrings.size()];//state holder
-        Arrays.fill(temporalStateHolder, theSymbolState);//fill it with the current symbol state.
-        int maxLengthOfDomain=biggestLengthInDomainList(domainStrings);//taking the length of the biggest domain to use it as a loop
-        // i = char index in string , j = string index in array | aligns with its current "state" in the arrayStateHolder
-        for (int i = 0; i < maxLengthOfDomain; i++) {//rotate over chars
-            for (int j = 0; j < domainStrings.size(); j++) { // rotate over strings(domains)
+        State[] temporalStateHolder = initializeStateHolder(domainStrings.size());
+        int maxLengthOfDomain = biggestLengthInDomainList(domainStrings);
+        generateDomainStates(domainStrings, temporalStateHolder, maxLengthOfDomain);
+    }
 
-                if (i < domainStrings.get(j).length() ){
+    private State[] initializeStateHolder(int size) {
+        State[] temporalStateHolder = new State[size];
+        Arrays.fill(temporalStateHolder, theSymbolState);
+        return temporalStateHolder;
+    }
+    //Also populates the Symbols addInputToStates
+    private void generateDomainStates(ArrayList<String> domainStrings, State[] temporalStateHolder, int maxLengthOfDomain) {
+        for (int i = 0; i < maxLengthOfDomain; i++) {
+            for (int j = 0; j < domainStrings.size(); j++) {
+                if (i < domainStrings.get(j).length()) {
                     char currentCharOfDomain = domainStrings.get(j).charAt(i);
-                     if (isNewStateNeeded(currentCharOfDomain,temporalStateHolder[j])){
-                         State s = new State(statesBaseName + stateGenerationCounter++,StateType.DOMAIN,currentCharOfDomain);
-                         allStatesQ.add(s);
-                         temporalStateHolder[j].addInputToStates(currentCharOfDomain,Set.of(s));
-                         System.out.println(temporalStateHolder[j]);
-                         temporalStateHolder[j]=s;
-                     }
-
-                    if (domainStrings.get(j).length() - 1 ==i){
-                        finalStatesF.add(temporalStateHolder[j]);//if string ends on this index then the state left in array is the final one.
+                    generateNewState(currentCharOfDomain, temporalStateHolder, j);
+                    if (domainStrings.get(j).length() - 1 == i) {
+                        finalStatesF.add(temporalStateHolder[j]);
                     }
                 }
-
             }
-
         }
-
     }
+
+    private void generateNewState(char currentCharOfDomain, State[] temporalStateHolder, int domainIndex) {
+        if (isNewStateNeeded(currentCharOfDomain, temporalStateHolder[domainIndex])) {
+            State newState = createNewState(currentCharOfDomain);
+            temporalStateHolder[domainIndex].addInputToStates(currentCharOfDomain, Set.of(newState));
+            temporalStateHolder[domainIndex] = newState;
+        }
+    }
+
+    private State createNewState(char currentCharOfDomain) {
+        State newState = new State(statesBaseName + stateGenerationCounter++, StateType.DOMAIN, currentCharOfDomain);
+        allStatesQ.add(newState);
+        return newState;
+    }
+
 
     private int biggestLengthInDomainList(ArrayList<String> domainStrings){
         int lengthToBeReturned = 0;
