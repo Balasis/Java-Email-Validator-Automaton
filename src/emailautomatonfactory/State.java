@@ -45,13 +45,24 @@ public class State{
         return getStateType();
     }
 
-    public Set<State> getStates(char input) {
-
-        return null;
+    public Set<State> getStates(char input) throws InputExistanceInStateException {
+        if (input==stateValue){
+            return Set.of(this);
+        }
+        if (inputToStates.containsKey(input)) {
+            return inputToStates.get(input);
+        }
+        for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
+            CharRange charRange = entry.getKey();
+            if (charRange.from() <= input && charRange.to() >= input) {
+                return entry.getValue();
+            }
+        }
+        throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
     }
 
     public boolean doesInputExist(char input){
-       if(inputToStates.containsKey(input)){
+       if(inputToStates.containsKey(input) && (input==stateValue)){
            return true;
        }
        for(CharRange cR : inputRangesToStates.keySet()){
@@ -64,9 +75,9 @@ public class State{
 
     public String toString(){
         if (stateType == StateType.USERNAME){
-            return stateType+" : " + stateName +" | " + inputRangesToStates + " ||||";
+            return stateType+" : " + stateName +" | " + inputRangesToStates.keySet() + " ||||";
         }
-        return stateType+" : " + stateName +" | " + inputToStates;
+        return stateType+" : " + stateName +" | " + inputToStates.keySet();
     }
 
 }

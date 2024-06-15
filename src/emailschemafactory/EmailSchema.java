@@ -39,7 +39,7 @@ public class EmailSchema {
     private String formatDomainString(String domainString) throws InvalidDomainFormException {
         String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
         checkBasicDomainStructure(startedATremovedIfExist);
-        return toLowerCase(startedATremovedIfExist);
+        return startedATremovedIfExist;
     }
 
     private String removeTheATSymbolIfExist(String domainString) {
@@ -57,12 +57,6 @@ public class EmailSchema {
             throw new InvalidDomainFormException("'.' required at least once in your domain");
         }
     }
-
-    private String toLowerCase(String domainString) {
-       return domainString.toLowerCase();
-    }
-
-
 
     public String toString(){
         return mainDomain +" : " + domains + "" + allowedCharRanges;
