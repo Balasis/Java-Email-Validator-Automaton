@@ -23,21 +23,15 @@ public class UsernameState extends State{
         this.invalidLastChars =new ArrayList<>();
     }
 
-    public UsernameState(String stateName, char stateValue) {
-        super(stateName, stateValue);
-        this.isItTheFirstInput =true;
-        this.invalidConsecutiveChars =new ArrayList<>();
-        this.invalidFirstChars =new ArrayList<>();
-        this.invalidLastChars =new ArrayList<>();
-    }
-
     @Override
     public Set<State> getStates(char input) throws InputExistanceInStateException {
+
         if(isItTheFirstInput && isAnInvalidFirstChar(input)){
             throw new InputExistanceInStateException("Char "+ input +" isn't allowed as first char of username");
         }else{
             isItTheFirstInput = false;
         }
+
 
         if (previousInput==input && isAnInvalidConsecutiveChars(input)){
             throw new InputExistanceInStateException("You can't have two '"+input+"' one after another");
@@ -64,6 +58,7 @@ public class UsernameState extends State{
         }
         throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
     }
+
 
 
     private boolean isAnInvalidFirstChar(char input){

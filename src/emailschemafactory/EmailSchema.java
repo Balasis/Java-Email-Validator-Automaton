@@ -7,13 +7,13 @@ import java.util.List;
 
 public class EmailSchema {
     private final String mainDomain;
-    private final List<String> domains; // Allowed domains
+    private final List<String> domains;
     private final List<CharRange> usernameInvalidConsecutiveChars;
     private final List<CharRange> usernameInvalidFirstChars;
     private final List<CharRange> usernameInvalidLastChars;
-    private final List<CharRange> allowedCharRanges; // Ranges of allowed characters for the username
+    private final List<CharRange> allowedCharRanges;
 
-    public EmailSchema(String mainDomain) throws InvalidDomainFormException {//TODO: create method to check if valid domain
+    public EmailSchema(String mainDomain) throws InvalidDomainFormException {
         this.mainDomain = formatDomainString(mainDomain);
         this.usernameInvalidConsecutiveChars = new ArrayList<>();
         this.usernameInvalidFirstChars = new ArrayList<>();
@@ -102,6 +102,30 @@ public class EmailSchema {
         addCharsToList(usernameInvalidLastChars, collection);
     }
 
+
+
+    private String formatDomainString(String domainString) throws InvalidDomainFormException {
+        String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
+        checkBasicDomainStructure(startedATremovedIfExist);
+        return startedATremovedIfExist;
+    }
+
+    private String removeTheATSymbolIfExist(String domainString) {
+        if (domainString.charAt(0) == '@') {
+            return domainString.substring(1);
+        }
+        return domainString;
+    }
+
+    private void checkBasicDomainStructure(String domainString) throws InvalidDomainFormException {
+        if (domainString.indexOf('@') != -1){
+            throw new InvalidDomainFormException("'@' is skippable(auto added) but not allowed elsewhere than first char");
+        }
+        if(domainString.indexOf('.') == -1){
+            throw new InvalidDomainFormException("'.' required at least once in your domain");
+        }
+    }
+
     private void addCharsToList( List<CharRange> theList, CharRange... charRange){
         List<CharRange> listAffected = theList;
         for (CharRange cR : charRange){
@@ -130,29 +154,6 @@ public class EmailSchema {
         }
     }
 
-
-    private String formatDomainString(String domainString) throws InvalidDomainFormException {
-        String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
-        checkBasicDomainStructure(startedATremovedIfExist);
-        return startedATremovedIfExist;
-    }
-
-    private String removeTheATSymbolIfExist(String domainString) {
-        if (domainString.charAt(0) == '@') {
-            return domainString.substring(1);
-        }
-        return domainString;
-    }
-
-    private void checkBasicDomainStructure(String domainString) throws InvalidDomainFormException {
-        if (domainString.indexOf('@') != -1){
-            throw new InvalidDomainFormException("'@' is skippable(auto added) but not allowed elsewhere than first char");
-        }
-        if(domainString.indexOf('.') == -1){
-            throw new InvalidDomainFormException("'.' required at least once in your domain");
-        }
-    }
-
     public String getMainDomain() {
         return mainDomain;
     }
@@ -164,8 +165,6 @@ public class EmailSchema {
     public List<CharRange> getAllowedCharRanges() {
         return allowedCharRanges;
     }
-
-
 
     public List<CharRange> getUsernameInvalidFirstChars() {
         return usernameInvalidFirstChars;

@@ -105,6 +105,15 @@ public class EmailAutomaton {
         Arrays.fill(temporalStateHolder, theSymbolState);
         return temporalStateHolder;
     }
+
+    private int biggestLengthInDomainList(ArrayList<String> domainStrings){
+        int lengthToBeReturned = 0;
+        for (String s : domainStrings){
+            lengthToBeReturned = Math.max(s.length(), lengthToBeReturned);
+        }
+        return lengthToBeReturned;
+    }
+
     //Also populates the Symbols addInputToStates
     private void generateDomainStates(ArrayList<String> domainStrings, State[] temporalStateHolder, int maxLengthOfDomain) {
         for (int i = 0; i < maxLengthOfDomain; i++) {
@@ -133,23 +142,14 @@ public class EmailAutomaton {
         }
     }
 
+    private boolean isNewStateNeeded(char input, State curState){
+        return  isInputDifferentThanStateValue(input, curState) && isInputNewToTheState(input, curState);
+    }
+
     private State createNewState(char currentCharOfDomain) {
         State newState = new State(statesBaseNameToLowerCase + stateGenerationCounter++, currentCharOfDomain);
         allStatesQ.add(newState);
         return newState;
-    }
-
-
-    private int biggestLengthInDomainList(ArrayList<String> domainStrings){
-        int lengthToBeReturned = 0;
-        for (String s : domainStrings){
-            lengthToBeReturned = Math.max(s.length(), lengthToBeReturned);
-        }
-        return lengthToBeReturned;
-    }
-
-    private boolean isNewStateNeeded(char input, State curState){
-        return  isInputDifferentThanStateValue(input, curState) && isInputNewToTheState(input, curState);
     }
 
     private boolean isInputDifferentThanStateValue(char input, State curState){
@@ -159,6 +159,8 @@ public class EmailAutomaton {
     private boolean isInputNewToTheState(char input, State curState){
         return !curState.doesInputExist(input);
     }
+
+
 
     public List<State> getAllStatesQ() {
         return allStatesQ;
