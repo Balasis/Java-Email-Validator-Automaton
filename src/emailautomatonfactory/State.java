@@ -37,6 +37,10 @@ public class State{
         return stateName;
     }
 
+    public char getStateValue() {
+        return stateValue;
+    }
+
     public StateType getStateType(){
         return getStateType();
     }
@@ -59,6 +63,9 @@ public class State{
     }
 
     public String toString(){
+        if (stateType == StateType.USERNAME){
+            return stateType+" : " + stateName +" | " + inputRangesToStates + " ||||";
+        }
         return stateType+" : " + stateName +" | " + inputToStates;
     }
 

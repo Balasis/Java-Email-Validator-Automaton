@@ -66,16 +66,17 @@ public class EmailAutomaton {
         for (int i = 0; i < maxLengthOfDomain; i++) {//rotate over chars
             for (int j = 0; j < domainStrings.size(); j++) { // rotate over strings(domains)
 
-                if (i <= domainStrings.get(j).length()){
+                if (i < domainStrings.get(j).length() ){
                     char currentCharOfDomain = domainStrings.get(j).charAt(i);
-                     if (! temporalStateHolder[j].doesInputExist(currentCharOfDomain) ){
+                     if (isNewStateNeeded(currentCharOfDomain,temporalStateHolder[j])){
                          State s = new State(statesBaseName + stateGenerationCounter++,StateType.DOMAIN,currentCharOfDomain);
                          allStatesQ.add(s);
                          temporalStateHolder[j].addInputToStates(currentCharOfDomain,Set.of(s));
                          System.out.println(temporalStateHolder[j]);
                          temporalStateHolder[j]=s;
                      }
-                    if (domainStrings.get(j).length()==i){
+
+                    if (domainStrings.get(j).length() - 1 ==i){
                         finalStatesF.add(temporalStateHolder[j]);//if string ends on this index then the state left in array is the final one.
                     }
                 }
@@ -94,6 +95,27 @@ public class EmailAutomaton {
         return lengthToBeReturned;
     }
 
+    private boolean isNewStateNeeded(char input, State curState){
+        return  isInputDifferentThanStateValue(input, curState) && isInputNewToTheState(input, curState);
+    }
 
+    private boolean isInputDifferentThanStateValue(char input, State curState){
+        return curState.getStateValue() != input;
+    }
 
+    private boolean isInputNewToTheState(char input, State curState){
+        return !curState.doesInputExist(input);
+    }
+
+    public List<State> getAllStatesQ() {
+        return allStatesQ;
+    }
+
+    public List<State> getFinalStatesF() {
+        return finalStatesF;
+    }
+
+    public State getInitialStatesI() {
+        return initialStatesI;
+    }
 }
