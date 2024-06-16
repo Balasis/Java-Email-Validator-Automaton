@@ -58,7 +58,11 @@ public class EmailValidatorProgram {
 
     private void updateAutomatonMerger() {
         try {
-            automatonMerger = new EmailAutomatonsMerger(automatons);
+            if(automatons.isEmpty()){
+                automatonMerger = null;
+            }else{
+                automatonMerger = new EmailAutomatonsMerger(automatons);
+            }
         } catch (EmailAutCaseMergeException e) {
             System.out.println(e.getMessage());
         }
