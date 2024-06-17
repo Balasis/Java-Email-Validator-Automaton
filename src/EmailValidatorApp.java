@@ -4,9 +4,9 @@ import exceptions.InvalidDomainFormException;
 
 public class EmailValidatorApp {
     public static void main(String[] args) {
-            EmailValidatorProgram validatorProgram = new EmailValidatorProgram();
+        EmailValidatorProgram validatorProgram = new EmailValidatorProgram();
         try {
-                       //Create your own, check comments below...
+            //Create your own, check comments below...
 
             validatorProgram.createGoogleAutomaton();
             validatorProgram.createOutlookAutomaton();
@@ -38,10 +38,10 @@ public class EmailValidatorApp {
             mySChema.addToDomains("@hereSomeMoreDOmains.outlook.com");
             //be aware the first parameter must be smaller in char index than the second. It's a (from -to)
             //you may always use the emailSchema class methods to save time , e.x addAllRegularInvalids or addAllBasicCharRanges
-            CharRange usernameCharRanges = new CharRange('A','Z');//for example ths will make the username accept all Caps;
-            CharRange usernameCharSomeMoreRanges = new CharRange('0','9');//here we add some numbers...
+            CharRange usernameCharRanges = new CharRange('A', 'Z');//for example ths will make the username accept all Caps;
+            CharRange usernameCharSomeMoreRanges = new CharRange('0', '9');//here we add some numbers...
             mySChema.addAllRegularInvalids();
-            validatorProgram.addAutomaton(mySChema,false);//and done... so simple
+            validatorProgram.addAutomaton(mySChema, false);//and done... so simple
         } catch (InvalidDomainFormException e) {
             throw new RuntimeException(e);
         }

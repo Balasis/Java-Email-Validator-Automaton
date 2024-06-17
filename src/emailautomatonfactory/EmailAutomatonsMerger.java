@@ -13,9 +13,9 @@ public class EmailAutomatonsMerger {
     public EmailAutomatonsMerger(List<EmailAutomaton> emailAutomaton) throws EmailAutCaseMergeException {
         this.emailAutomaton = emailAutomaton;
         isCaseSensAmongSchemasConsist();
-        this.caseSensitiveDomain=emailAutomaton.get(0).getCaseSensitiveDomain();
-        this.finalStatesF= new ArrayList<>();
-        this.initialStatesI= new ArrayList<>();
+        this.caseSensitiveDomain = emailAutomaton.get(0).getCaseSensitiveDomain();
+        this.finalStatesF = new ArrayList<>();
+        this.initialStatesI = new ArrayList<>();
         populateAllStateLists();
     }
 
@@ -54,9 +54,9 @@ public class EmailAutomatonsMerger {
 
 
     //Privates -assist
-    private String turnDomainToLower(String email){
-        String[] splittedString=email.split("@");
-        return  splittedString[0] + '@' + splittedString[1].toLowerCase();
+    private String turnDomainToLower(String email) {
+        String[] splittedString = email.split("@");
+        return splittedString[0] + '@' + splittedString[1].toLowerCase();
     }
 
     private void isCaseSensAmongSchemasConsist() throws EmailAutCaseMergeException {
@@ -68,7 +68,7 @@ public class EmailAutomatonsMerger {
         }
     }
 
-    private void populateAllStateLists(){
+    private void populateAllStateLists() {
         for (EmailAutomaton eA : emailAutomaton) {
             finalStatesF.addAll(eA.getFinalStatesF());
             initialStatesI.add(eA.getInitialStateI());

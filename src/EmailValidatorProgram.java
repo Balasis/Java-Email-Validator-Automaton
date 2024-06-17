@@ -41,7 +41,6 @@ public class EmailValidatorProgram {
     }
 
 
-
     public void createGoogleAutomaton() throws InvalidDomainFormException {
         EmailSchema googleSchema = new EmailSchema("gmail.com");
         googleSchema.addAllBasicCharRanges();
@@ -58,9 +57,9 @@ public class EmailValidatorProgram {
 
     private void updateAutomatonMerger() {
         try {
-            if(automatons.isEmpty()){
+            if (automatons.isEmpty()) {
                 automatonMerger = null;
-            }else{
+            } else {
                 automatonMerger = new EmailAutomatonsMerger(automatons);
             }
         } catch (EmailAutCaseMergeException e) {

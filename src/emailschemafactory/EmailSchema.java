@@ -27,87 +27,87 @@ public class EmailSchema {
 
     //API
     public void addToDomains(String domainStringNoAT) throws InvalidDomainFormException {
-        domains.add( formatDomainString(domainStringNoAT) );
+        domains.add(formatDomainString(domainStringNoAT));
     }
 
-    public void addAllowedCharRanges(CharRange range){
+    public void addAllowedCharRanges(CharRange range) {
         allowedCharRanges.add(range);
     }
 
-    public void addAllBasicCharRanges(){
-        addAllowedCharRanges(new CharRange('A','Z'));
-        addAllowedCharRanges(new CharRange('a','z'));
-        addAllowedCharRanges(new CharRange('0','9'));
-        addAllowedCharRanges(new CharRange('_','_'));
-        addAllowedCharRanges(new CharRange('.','.'));
-        addAllowedCharRanges(new CharRange('-','-'));
+    public void addAllBasicCharRanges() {
+        addAllowedCharRanges(new CharRange('A', 'Z'));
+        addAllowedCharRanges(new CharRange('a', 'z'));
+        addAllowedCharRanges(new CharRange('0', '9'));
+        addAllowedCharRanges(new CharRange('_', '_'));
+        addAllowedCharRanges(new CharRange('.', '.'));
+        addAllowedCharRanges(new CharRange('-', '-'));
     }
 
-    public void addAllRegularInvalids(){
+    public void addAllRegularInvalids() {
         addAllRegularFirstCharInvalids();
         addAllRegularLastCharInvalids();
         addAllRegularNoConsecutiveChar();
     }
 
-    public void addUsernameInvalidConsecutiveChars(char... character ){
-        addCharsToList( usernameInvalidConsecutiveChars, character);
+    public void addUsernameInvalidConsecutiveChars(char... character) {
+        addCharsToList(usernameInvalidConsecutiveChars, character);
     }
 
-    public void addUsernameInvalidConsecutiveChars(CharRange... charRange){
+    public void addUsernameInvalidConsecutiveChars(CharRange... charRange) {
         addCharsToList(usernameInvalidConsecutiveChars, charRange);
     }
 
-    public void addUsernameInvalidConsecutiveChars(Collection<CharRange> collection){
+    public void addUsernameInvalidConsecutiveChars(Collection<CharRange> collection) {
         addCharsToList(usernameInvalidConsecutiveChars, collection);
     }
 
-    public void addFirstUsernameInvalidChars(char... character ){
-        addCharsToList( usernameInvalidFirstChars, character);
+    public void addFirstUsernameInvalidChars(char... character) {
+        addCharsToList(usernameInvalidFirstChars, character);
     }
 
-    public void addFirstUsernameInvalidChars(CharRange... charRange){
+    public void addFirstUsernameInvalidChars(CharRange... charRange) {
         addCharsToList(usernameInvalidFirstChars, charRange);
     }
 
-    public void addFirstUsernameInvalidChars(Collection<CharRange> collection){
+    public void addFirstUsernameInvalidChars(Collection<CharRange> collection) {
         addCharsToList(usernameInvalidFirstChars, collection);
     }
 
-    public void addLastUsernameInvalidChars(char... character){
+    public void addLastUsernameInvalidChars(char... character) {
         addCharsToList(usernameInvalidLastChars, character);
     }
 
-    public void addLastUsernameInvalidChars(CharRange... charRange){
+    public void addLastUsernameInvalidChars(CharRange... charRange) {
         addCharsToList(usernameInvalidLastChars, charRange);
     }
 
-    public void addLastUsernameInvalidChars(Collection<CharRange> collection){
+    public void addLastUsernameInvalidChars(Collection<CharRange> collection) {
         addCharsToList(usernameInvalidLastChars, collection);
     }
 
 
     //Privates -assist
-    private void addAllRegularFirstCharInvalids(){
-        addFirstUsernameInvalidChars(new CharRange('0','9'));
+    private void addAllRegularFirstCharInvalids() {
+        addFirstUsernameInvalidChars(new CharRange('0', '9'));
         addFirstUsernameInvalidChars('_');
         addFirstUsernameInvalidChars('.');
         addFirstUsernameInvalidChars('-');
     }
 
-    private void addAllRegularLastCharInvalids(){
+    private void addAllRegularLastCharInvalids() {
         addLastUsernameInvalidChars('_');
         addLastUsernameInvalidChars('.');
         addLastUsernameInvalidChars('-');
     }
 
-    private void addAllRegularNoConsecutiveChar(){
+    private void addAllRegularNoConsecutiveChar() {
         addUsernameInvalidConsecutiveChars('_');
         addUsernameInvalidConsecutiveChars('.');
         addUsernameInvalidConsecutiveChars('-');
     }
 
     private String formatDomainString(String domainString) throws InvalidDomainFormException {
-        String startedATremovedIfExist=removeTheATSymbolIfExist(domainString);
+        String startedATremovedIfExist = removeTheATSymbolIfExist(domainString);
         checkBasicDomainStructure(startedATremovedIfExist);
         return startedATremovedIfExist;
     }
@@ -120,16 +120,16 @@ public class EmailSchema {
     }
 
     private void checkBasicDomainStructure(String domainString) throws InvalidDomainFormException {
-        if (domainString.indexOf('@') != -1){
+        if (domainString.indexOf('@') != -1) {
             throw new InvalidDomainFormException("'@' is skippable(auto added) but not allowed elsewhere than first char");
         }
-        if(domainString.indexOf('.') == -1){
+        if (domainString.indexOf('.') == -1) {
             throw new InvalidDomainFormException("'.' required at least once in your domain");
         }
     }
 
-    private void addCharsToList( List<CharRange> theList, CharRange... charRange){
-        for (CharRange cR : charRange){
+    private void addCharsToList(List<CharRange> theList, CharRange... charRange) {
+        for (CharRange cR : charRange) {
             boolean isFromAndToExist = false;
             for (CharRange existingCr : theList) {
                 if (cR.from() == existingCr.from() && cR.to() == existingCr.to()) {
@@ -137,20 +137,20 @@ public class EmailSchema {
                     break;
                 }
             }
-            if (!isFromAndToExist){
+            if (!isFromAndToExist) {
                 theList.add(cR);
             }
         }
     }
 
-    private void addCharsToList(List<CharRange> theList, char... character ){
-        for (char c : character){
-            addCharsToList( theList, new CharRange(c,c));
+    private void addCharsToList(List<CharRange> theList, char... character) {
+        for (char c : character) {
+            addCharsToList(theList, new CharRange(c, c));
         }
     }
 
-    private void addCharsToList(List<CharRange> theList, Collection<CharRange> collection){
-        for (CharRange cR : collection){
+    private void addCharsToList(List<CharRange> theList, Collection<CharRange> collection) {
+        for (CharRange cR : collection) {
             addCharsToList(theList, cR);
         }
     }
@@ -180,7 +180,7 @@ public class EmailSchema {
         return usernameInvalidConsecutiveChars;
     }
 
-    public String toString(){
+    public String toString() {
         return "Main domain : " + mainDomain + "\n" +
                 "Domains : " + domains + "\n";
     }

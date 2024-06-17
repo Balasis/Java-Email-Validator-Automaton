@@ -5,19 +5,19 @@ import exceptions.InputExistanceInStateException;
 
 import java.util.*;
 
-public class State{
+public class State {
     private final String stateName;
     private char stateValue;
-    private final Map<Character,Set<State>> inputToStates;
-    private final Map<CharRange,Set<State>> inputRangesToStates;
+    private final Map<Character, Set<State>> inputToStates;
+    private final Map<CharRange, Set<State>> inputRangesToStates;
 
-    public State(String stateName){
+    public State(String stateName) {
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
         this.stateName = stateName;
     }
 
-    public State(String stateName, char stateValue){
+    public State(String stateName, char stateValue) {
         this.inputToStates = new HashMap<>();
         this.inputRangesToStates = new HashMap<>();
         this.stateName = stateName;
@@ -25,11 +25,11 @@ public class State{
     }
 
     //API
-    public void addInputToStates(Character input, Set<State> states){
+    public void addInputToStates(Character input, Set<State> states) {
         inputToStates.put(input, states);
     }
 
-    public void addInputRangesToStates(Map<CharRange,Set<State>> inputToStates){
+    public void addInputRangesToStates(Map<CharRange, Set<State>> inputToStates) {
         this.inputRangesToStates.putAll(inputToStates);
     }
 
@@ -39,20 +39,20 @@ public class State{
         }
         for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
             CharRange charRange = entry.getKey();//if input exist in the range of input list ->give state
-            if ( charRange.contains(input) ) {
+            if (charRange.contains(input)) {
                 return entry.getValue();
             }
         }
-        throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
+        throw new InputExistanceInStateException("Char " + input + "  doesn't exist in state");
     }
 
-    public boolean doesInputExist(char input){
+    public boolean doesInputExist(char input) {
         if (inputToStates.containsKey(input)) {
             return true;
         }
         for (Map.Entry<CharRange, Set<State>> entry : inputRangesToStates.entrySet()) {
             CharRange charRange = entry.getKey();
-            if ( charRange.contains(input) ) {
+            if (charRange.contains(input)) {
                 return true;
             }
         }
@@ -72,8 +72,8 @@ public class State{
         return inputRangesToStates;
     }
 
-    public String toString(){
-            return " : " + stateName +" | " + inputToStates.keySet();
+    public String toString() {
+        return " : " + stateName + " | " + inputToStates.keySet();
     }
 
 }

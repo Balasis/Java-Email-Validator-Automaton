@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class UsernameState extends State{
+public class UsernameState extends State {
 
     private char previousInput;
     private boolean isItTheFirstInput;
@@ -18,42 +18,42 @@ public class UsernameState extends State{
 
     public UsernameState(String stateName) {
         super(stateName);
-        this.isItTheFirstInput =true;
-        this.invalidConsecutiveChars =new ArrayList<>();
-        this.invalidFirstChars =new ArrayList<>();
-        this.invalidLastChars =new ArrayList<>();
+        this.isItTheFirstInput = true;
+        this.invalidConsecutiveChars = new ArrayList<>();
+        this.invalidFirstChars = new ArrayList<>();
+        this.invalidLastChars = new ArrayList<>();
     }
 
     @Override
     public Set<State> getStates(char input) throws InputExistanceInStateException {
         usernameInvalidChecks(input);
 
-        if (input==getStateValue()){
-            previousInput=input;
+        if (input == getStateValue()) {
+            previousInput = input;
             return Set.of(this);
         }
         if (getInputToStates().containsKey(input)) {
-            previousInput=input;
+            previousInput = input;
             return getInputToStates().get(input);
         }
         for (Map.Entry<CharRange, Set<State>> entry : getInputRangesToStates().entrySet()) {
             CharRange charRange = entry.getKey();
-            if (charRange.contains(input) ) {
-                previousInput=input;
+            if (charRange.contains(input)) {
+                previousInput = input;
                 return entry.getValue();
             }
         }
-        throw new InputExistanceInStateException("Char "+input +"  doesn't exist in state");
+        throw new InputExistanceInStateException("Char " + input + "  doesn't exist in state");
     }
 
     @Override
-    public boolean doesInputExist(char input){
+    public boolean doesInputExist(char input) {
         try {
             usernameInvalidChecks(input);
         } catch (InputExistanceInStateException e) {
             return false;
         }
-        if (input==getStateValue()){
+        if (input == getStateValue()) {
             return true;
         }
         return super.doesInputExist(input);
@@ -61,35 +61,35 @@ public class UsernameState extends State{
 
 
     //Privates -assist
-    private void usernameInvalidChecks(char input)  throws InputExistanceInStateException{
+    private void usernameInvalidChecks(char input) throws InputExistanceInStateException {
         isAnInvalidFirstChar(input);
         isAnInvalidConsecutiveChars(input);
         isAnInvalidLastChar(input);
     }
 
     private void isAnInvalidFirstChar(char input) throws InputExistanceInStateException {
-        if( isItTheFirstInput && isIncludedInRangeList( input, invalidFirstChars )){
-            throw new InputExistanceInStateException("Char "+ input +" isn't allowed as first char of username");
-        }else{
+        if (isItTheFirstInput && isIncludedInRangeList(input, invalidFirstChars)) {
+            throw new InputExistanceInStateException("Char " + input + " isn't allowed as first char of username");
+        } else {
             isItTheFirstInput = false;
         }
     }
 
     private void isAnInvalidConsecutiveChars(char input) throws InputExistanceInStateException {
-        if (previousInput==input && isIncludedInRangeList( input, invalidConsecutiveChars )){
-            throw new InputExistanceInStateException("You can't have two '"+input+"' one after another");
+        if (previousInput == input && isIncludedInRangeList(input, invalidConsecutiveChars)) {
+            throw new InputExistanceInStateException("You can't have two '" + input + "' one after another");
         }
     }
 
     private void isAnInvalidLastChar(char input) throws InputExistanceInStateException {
-        if (isIncludedInRangeList( previousInput, invalidLastChars ) && input=='@'){
-            throw new InputExistanceInStateException("Char "+previousInput +" isn't allowed as last char of username(before '@')");
+        if (isIncludedInRangeList(previousInput, invalidLastChars) && input == '@') {
+            throw new InputExistanceInStateException("Char " + previousInput + " isn't allowed as last char of username(before '@')");
         }
     }
 
-    private boolean isIncludedInRangeList(char input, List<CharRange> theList  ){
-        for(CharRange cR : theList){
-            if (cR.contains(input) ){
+    private boolean isIncludedInRangeList(char input, List<CharRange> theList) {
+        for (CharRange cR : theList) {
+            if (cR.contains(input)) {
                 return true;
             }
         }
